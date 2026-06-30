@@ -1,0 +1,16 @@
+# DevDock CODEOWNERS
+
+# Global owners
+* @devdock/core-team
+
+# Package owners
+/packages/security/ @devdock/security-team
+/packages/database/ @devdock/backend-team
+/packages/ui/ @devdock/ui-team
+/packages/terminal/ @devdock/systems-team
+/packages/system/ @devdock/systems-team
+/apps/desktop/ @devdock/desktop-team
+
+# Config and CI
+/.github/workflows/ @devdock/devops-team
+/turbo.json @devdock/devops-team
