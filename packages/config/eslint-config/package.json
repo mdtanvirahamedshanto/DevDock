@@ -1,0 +1,10 @@
+{
+  "name": "@devdock/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-turbo": "^1.13.0",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
+}
