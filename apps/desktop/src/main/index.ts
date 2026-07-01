@@ -4,6 +4,7 @@ import { windowManager } from './WindowManager';
 import { recoveryManager } from '@devdock/core';
 import { getSystemMetrics } from '@devdock/system';
 import { processService } from '@devdock/processes';
+import { portService } from '@devdock/ports';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -170,6 +171,24 @@ ipcMain.handle('processes:list', async () => {
 ipcMain.handle('processes:action', async (_, { pid, action }) => {
   try {
     const result = await processService.executeAction(pid, action);
+    return { success: result };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('ports:list', async () => {
+  try {
+    const ports = await portService.getActivePorts();
+    return { success: true, data: ports };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('ports:kill', async (_, { pid, force }) => {
+  try {
+    const result = force ? await portService.forceKillPort(pid) : await portService.killPort(pid);
     return { success: result };
   } catch (err: any) {
     return { success: false, error: err.message };
