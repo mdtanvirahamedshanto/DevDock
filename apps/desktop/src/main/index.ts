@@ -1,10 +1,11 @@
-import { app, ipcMain, BrowserWindow, Menu, MenuItemConstructorOptions } from 'electron';
+import { app, ipcMain, BrowserWindow, Menu, MenuItemConstructorOptions, dialog } from 'electron';
 import { join } from 'path';
 import { windowManager } from './WindowManager';
 import { recoveryManager } from '@devdock/core';
 import { getSystemMetrics } from '@devdock/system';
 import { processService } from '@devdock/processes';
 import { portService } from '@devdock/ports';
+import { scanWorkspace, projectRunner, readEnvFile, writeEnvFile } from '@devdock/projects';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -193,4 +194,49 @@ ipcMain.handle('ports:kill', async (_, { pid, force }) => {
   } catch (err: any) {
     return { success: false, error: err.message };
   }
+});
+
+// Projects IPC
+ipcMain.handle('projects:scan', async (event) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+  if (!window) return { success: false, error: 'No window found' };
+
+  const { canceled, filePaths } = await dialog.showOpenDialog(window, {
+    properties: ['openDirectory'],
+  });
+
+  if (canceled || filePaths.length === 0) {
+    return { success: false, error: 'Cancelled' };
+  }
+
+  const workspace = await scanWorkspace(filePaths[0]);
+  if (workspace) {
+    return { success: true, data: workspace };
+  }
+  return { success: false, error: 'Failed to scan workspace' };
+});
+
+ipcMain.handle('projects:start', async (event, { id, path, framework }) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+  const success = await projectRunner.start(id, path, framework, (log) => {
+    if (window && !window.isDestroyed()) {
+      window.webContents.send('projects:log', { id, log });
+    }
+  });
+  return { success };
+});
+
+ipcMain.handle('projects:stop', async (_, { id }) => {
+  const success = await projectRunner.stop(id);
+  return { success };
+});
+
+ipcMain.handle('projects:env:read', async (_, { path }) => {
+  const env = await readEnvFile(path);
+  return { success: true, data: env };
+});
+
+ipcMain.handle('projects:env:write', async (_, { path, env }) => {
+  const success = await writeEnvFile(path, env);
+  return { success };
 });

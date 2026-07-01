@@ -6,6 +6,7 @@ import { Dashboard } from './pages/Dashboard';
 import { SettingsPage } from './pages/Settings';
 import { Processes } from './pages/Processes';
 import { Ports } from './pages/Ports';
+import { Projects } from './pages/Projects';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Toaster } from '@devdock/ui';
 import './index.css';
@@ -24,6 +25,7 @@ export const App: React.FC = () => {
               <Route index element={<Dashboard />} />
               <Route path="processes" element={<Processes />} />
               <Route path="ports" element={<Ports />} />
+              <Route path="projects" element={<Projects />} />
               <Route path="settings" element={<SettingsPage />} />
               {/* Other routes placeholder */}
               <Route path="*" element={<div className="p-6">Work in progress...</div>} />

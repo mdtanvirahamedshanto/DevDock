@@ -10,7 +10,7 @@ export const electronAPI = {
     throw new Error(`Unauthorized IPC channel: ${channel}`);
   },
   on: (channel: string, callback: (...args: any[]) => void) => {
-    if (channel === 'system:metrics') {
+    if (channel === 'system:metrics' || channel === 'projects:log') {
       const subscription = (_event: any, ...args: any[]) => callback(...args);
       ipcRenderer.on(channel, subscription);
       return () => ipcRenderer.removeListener(channel, subscription);
