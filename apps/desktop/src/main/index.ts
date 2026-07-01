@@ -1,94 +1,124 @@
-import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron';
+import { app, ipcMain, BrowserWindow, Menu, MenuItemConstructorOptions } from 'electron';
 import { join } from 'path';
-import crypto from 'crypto';
-import { IpcResponse, ErrorModel } from '@devdock/ipc';
+import { windowManager } from './WindowManager';
+import { recoveryManager } from '@devdock/core';
 
-// --- Lifecycle Managers (Stubs for full implementation) ---
 const bootSequence = async () => {
-  console.log('[Boot] Initializing Config...');
-  console.log('[Boot] Initializing Logger...');
-  console.log('[Boot] Initializing Database...');
-  console.log('[Boot] Initializing Settings...');
-  console.log('[Boot] Initializing Plugin Loader...');
-  console.log('[Boot] Initializing Native Services...');
+  console.log('[Boot] Initializing DevDock Native Core...');
+  await recoveryManager.initialize();
+  // Initialize other services here
 };
 
 const shutdownSequence = async () => {
-  console.log('[Shutdown] Terminating Workers...');
-  console.log('[Shutdown] Closing Terminals...');
-  console.log('[Shutdown] Closing Database Connections...');
-  console.log('[Shutdown] Flushing Logs...');
+  console.log('[Shutdown] Terminating DevDock Native Core...');
 };
 
-// --- Generic IPC Router Wrapper ---
-const registerIpcHandler = <T>(
-  channel: string,
-  handler: (event: IpcMainInvokeEvent, ...args: any[]) => Promise<T>,
-  timeoutMs: number = 5000
-) => {
-  ipcMain.handle(channel, async (event, ...args): Promise<IpcResponse<T>> => {
-    const requestId = crypto.randomUUID();
-    const startTime = Date.now();
-    
-    try {
-      // Create a timeout promise
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error(`IPC timeout after ${timeoutMs}ms`)), timeoutMs);
-      });
+const setupNativeMenus = () => {
+  const isMac = process.platform === 'darwin';
 
-      // Race the handler against the timeout
-      const data = await Promise.race([handler(event, ...args), timeoutPromise]);
-
-      return {
-        success: true,
-        data,
-        timestamp: new Date().toISOString(),
-        requestId,
-      };
-    } catch (error: any) {
-      console.error(`[IPC Error] ${channel} [${requestId}]:`, error);
-      return {
-        success: false,
-        error: {
-          code: error.code || 'INTERNAL_ERROR',
-          message: error.message || 'An unknown error occurred.',
-          // Only include stack in development
-          ...(process.env.NODE_ENV !== 'production' && { details: { stack: error.stack } }),
-        },
-        timestamp: new Date().toISOString(),
-        requestId,
-      };
-    }
-  });
-};
-
-// --- Window Management ---
-function createWindow() {
-  const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
+  const template: MenuItemConstructorOptions[] = [
+    // { role: 'appMenu' }
+    ...(isMac
+      ? [
+          {
+            label: app.name,
+            submenu: [
+              { role: 'about' as const },
+              { type: 'separator' as const },
+              { role: 'services' as const },
+              { type: 'separator' as const },
+              { role: 'hide' as const },
+              { role: 'hideOthers' as const },
+              { role: 'unhide' as const },
+              { type: 'separator' as const },
+              { role: 'quit' as const },
+            ],
+          },
+        ]
+      : []),
+    {
+      label: 'File',
+      submenu: [isMac ? { role: 'close' as const } : { role: 'quit' as const }],
     },
-  });
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' as const },
+        { role: 'redo' as const },
+        { type: 'separator' as const },
+        { role: 'cut' as const },
+        { role: 'copy' as const },
+        { role: 'paste' as const },
+        ...(isMac
+          ? [
+              { role: 'pasteAndMatchStyle' as const },
+              { role: 'delete' as const },
+              { role: 'selectAll' as const },
+              { type: 'separator' as const },
+              {
+                label: 'Speech',
+                submenu: [{ role: 'startSpeaking' as const }, { role: 'stopSpeaking' as const }],
+              },
+            ]
+          : [
+              { role: 'delete' as const },
+              { type: 'separator' as const },
+              { role: 'selectAll' as const },
+            ]),
+      ],
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' as const },
+        { role: 'forceReload' as const },
+        { role: 'toggleDevTools' as const },
+        { type: 'separator' as const },
+        { role: 'resetZoom' as const },
+        { role: 'zoomIn' as const },
+        { role: 'zoomOut' as const },
+        { type: 'separator' as const },
+        { role: 'togglefullscreen' as const },
+      ],
+    },
+    {
+      label: 'Window',
+      submenu: [
+        { role: 'minimize' as const },
+        { role: 'zoom' as const },
+        ...(isMac
+          ? [
+              { type: 'separator' as const },
+              { role: 'front' as const },
+              { type: 'separator' as const },
+              { role: 'window' as const },
+            ]
+          : [{ role: 'close' as const }]),
+      ],
+    },
+  ];
 
-  if (process.env.VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
-    mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
-  }
-}
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+};
 
 app.whenReady().then(async () => {
   await bootSequence();
-  createWindow();
+  setupNativeMenus();
+
+  windowManager.createMainWindow(
+    join(__dirname, '../preload/index.js'),
+    join(__dirname, '../renderer/index.html'),
+    process.env.VITE_DEV_SERVER_URL,
+  );
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+      windowManager.createMainWindow(
+        join(__dirname, '../preload/index.js'),
+        join(__dirname, '../renderer/index.html'),
+        process.env.VITE_DEV_SERVER_URL,
+      );
     }
   });
 });
@@ -104,12 +134,12 @@ app.on('before-quit', async () => {
   await shutdownSequence();
 });
 
-// --- Register IPC Handlers using the Wrapper ---
-registerIpcHandler('system:info', async () => {
+// IPC Example
+ipcMain.handle('system:info', async () => {
   return {
-    platform: process.platform,
-    arch: process.arch,
-    memoryTotal: process.getSystemMemoryInfo().total,
-    memoryFree: process.getSystemMemoryInfo().free,
+    success: true,
+    data: { platform: process.platform },
+    timestamp: new Date().toISOString(),
+    requestId: '123',
   };
-}, 5000);
+});

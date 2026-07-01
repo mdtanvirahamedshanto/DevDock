@@ -1,0 +1,33 @@
+import React from 'react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MainLayout } from './layouts/MainLayout';
+import { Dashboard } from './pages/Dashboard';
+import { SettingsPage } from './pages/Settings';
+import { ThemeProvider } from './components/ThemeProvider';
+import { Toaster } from '@devdock/ui';
+import './index.css';
+import '@devdock/ui/src/globals.css';
+
+const queryClient = new QueryClient();
+
+export const App: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        {/* We use MemoryRouter for Electron apps to prevent path issues in prod */}
+        <MemoryRouter>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="settings" element={<SettingsPage />} />
+              {/* Other routes placeholder */}
+              <Route path="*" element={<div className="p-6">Work in progress...</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+        <Toaster />
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+};

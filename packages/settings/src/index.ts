@@ -1,1 +1,1 @@
-export const name = '@devdock/settings';
+export * from './schema';
