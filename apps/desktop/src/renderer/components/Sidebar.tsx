@@ -29,7 +29,7 @@ const NAV_ITEMS = [
 
 export const Sidebar: React.FC = () => {
   return (
-    <div className="w-64 h-full bg-background/50 backdrop-blur-xl border-r border-white/5 flex flex-col pt-6 relative z-50">
+    <div className="w-64 h-full bg-background/50 backdrop-blur-xl border-r border-border/50 flex flex-col pt-6 relative z-50">
       <div className="px-6 mb-8 flex items-center space-x-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/20">
           <span className="text-white font-bold text-lg">D</span>
@@ -45,8 +45,8 @@ export const Sidebar: React.FC = () => {
             className={({ isActive }) =>
               `relative flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                 isActive
-                  ? 'text-white'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
               }`
             }
           >
@@ -76,14 +76,14 @@ export const Sidebar: React.FC = () => {
         ))}
       </nav>
 
-      <div className="p-3 border-t border-white/5">
+      <div className="p-3 border-t border-border/50">
         <NavLink
           to="/settings"
           className={({ isActive }) =>
             `relative flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
               isActive
-                ? 'text-white bg-primary/20 border border-primary/30'
-                : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                ? 'text-primary bg-primary/20 border border-primary/30'
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
             }`
           }
         >

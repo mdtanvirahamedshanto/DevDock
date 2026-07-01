@@ -18,7 +18,7 @@ const DashboardCard: React.FC<{
       whileHover={{ scale: 1.02 }}
       className="group"
     >
-      <Card className="relative overflow-hidden bg-card/50 backdrop-blur-sm border-white/10 hover:border-primary/50 transition-colors p-6 h-full cursor-pointer">
+      <Card className="relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-colors p-6 h-full cursor-pointer">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="relative z-10 flex flex-col justify-between h-full space-y-4">
           <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ export const Dashboard: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h2 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">
+          <h2 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/50">
             Overview
           </h2>
           <p className="text-muted-foreground mt-1">
@@ -118,7 +118,7 @@ export const Dashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="flex-1 rounded-xl bg-card/30 backdrop-blur border border-white/5 p-8 flex flex-col items-center justify-center text-center space-y-4"
+        className="flex-1 rounded-xl bg-card/30 backdrop-blur border border-border/50 p-8 flex flex-col items-center justify-center text-center space-y-4"
       >
         <Activity className="w-12 h-12 text-muted-foreground/30" />
         <h3 className="text-xl font-medium text-muted-foreground">DevDock Telemetry Engine</h3>
