@@ -101,6 +101,7 @@ export interface StaticSystemInfo {
   cpuPhysicalCores: number;
   totalRam: number;
   totalStorage: number;
+  systemUptime: number;
   displays: {
     model: string;
     resolutionX: number;

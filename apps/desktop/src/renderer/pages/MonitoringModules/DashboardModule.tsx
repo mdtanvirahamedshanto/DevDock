@@ -73,14 +73,13 @@ export const DashboardModule: React.FC = () => {
 
   // Live uptime counter
   useEffect(() => {
-    const startEpoch = latest?.timestamp ? Date.now() : 0;
-    const bootTime = startEpoch ? startEpoch - (performance.now() > 0 ? performance.now() : 0) : 0;
-    // Use window.performance.now as proxy for uptime since app start
-    const updateUptime = () => setUptime(Math.floor(performance.now() / 1000));
+    if (!staticInfo?.systemUptime) return;
+    const bootEpoch = Date.now() - staticInfo.systemUptime * 1000;
+    const updateUptime = () => setUptime(Math.floor((Date.now() - bootEpoch) / 1000));
     updateUptime();
     const interval = setInterval(updateUptime, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [staticInfo?.systemUptime]);
 
   if (!latest) {
     return (

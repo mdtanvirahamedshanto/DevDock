@@ -285,6 +285,7 @@ export class MonitoringEngine {
         cpuPhysicalCores: cpu.physicalCores,
         totalRam: mem.total,
         totalStorage,
+        systemUptime: os.uptime(),
         displays: graphics.displays.map((d) => ({
           model: d.model,
           resolutionX: d.resolutionX,
