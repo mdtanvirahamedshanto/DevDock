@@ -36,6 +36,10 @@ export const useMonitoringStore = create<MonitoringStore>((set, get) => ({
     set({ isMonitoring: true });
 
     const electronAPI = (window as any).electron;
+    if (!electronAPI) {
+      console.warn('Electron API not available for monitoring:start');
+      return;
+    }
     electronAPI.send('monitoring:start');
 
     // Listen for ticks
@@ -54,6 +58,10 @@ export const useMonitoringStore = create<MonitoringStore>((set, get) => ({
     set({ isMonitoring: false });
 
     const electronAPI = (window as any).electron;
+    if (!electronAPI) {
+      console.warn('Electron API not available for monitoring:stop');
+      return;
+    }
     electronAPI.send('monitoring:stop');
     electronAPI.removeAllListeners('monitoring:tick');
   },
@@ -61,6 +69,10 @@ export const useMonitoringStore = create<MonitoringStore>((set, get) => ({
   fetchHealth: async () => {
     try {
       const electronAPI = (window as any).electron;
+      if (!electronAPI) {
+        console.warn('Electron API not available for monitoring:health');
+        return;
+      }
       const res = await electronAPI.invoke('monitoring:health');
       if (res && res.disks) {
         set({ disks: res.disks });

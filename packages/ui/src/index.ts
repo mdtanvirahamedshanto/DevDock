@@ -17,3 +17,5 @@ export * from './components/ui/skeleton';
 export * from './components/ui/context-menu';
 export * from './components/ui/command';
 export * from './hooks/use-toast';
+export * from './components/ui/label';
+export * from './components/ui/select';
