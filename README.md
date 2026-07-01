@@ -1,58 +1,57 @@
 # DevDock 🚢
 
-**Developer Workspace Control Center**
+DevDock is a colossal, unified Desktop application engineered for modern developers. It aims to completely replace the fragmented tooling ecosystem (Task Manager, Docker Desktop, Database Clients, Terminals) into one visually stunning, high-performance interface.
 
-DevDock is an enterprise-grade, cross-platform desktop application designed to be the ultimate all-in-one workspace manager for developers. It replaces scattered utilities by centralizing Port Management, Process Monitoring, Docker orchestration, and Terminal management into a single, highly optimized native interface.
+Built with **Electron**, **React**, **Zustand**, **Shadcn UI**, and a massive **Pnpm TurboRepo** workspace architecture.
 
-![DevDock Interface](https://via.placeholder.com/1200x600.png?text=DevDock+Dashboard)
+## 🌟 Master Feature List (Completed Phases)
 
-## Features
+1. **Dashboard & Widget System**: Real-time system telemetry cards.
+2. **Process Manager**: A native task manager (kill, suspend, resume) via `ps-list` IPC hooks.
+3. **Port Manager**: Maps active TCP/UDP ports, detects conflicts, and force-kills locking processes via `netstat` and `lsof`.
+4. **Project Manager**: Recursively scans workspaces, automatically detects frameworks (Next.js, Vue, Laravel), and manages Env files and Node instances.
+5. **Database Center**: A built-in connection manager for MySQL and PostgreSQL. Provides a SQL execution terminal and schema viewer!
+6. **Docker Manager**: Interacts natively with the Docker daemon (`/var/run/docker.sock`) to manage containers, images, volumes, and networks.
+7. **Git Interface**: Wraps `simple-git` for visual commits, pushing, pulling, and branch switching directly within your workspace roots.
+8. **File Manager (Disk Sweeper)**: A multi-threaded scanner that deeply crawls for files >10MB and clusters identical files by executing MD5 byte-hashing for instant deduplication.
+9. **Terminal Emulator**: Integrates `node-pty` and `xterm.js` to spawn authentic, native local Zsh/Bash/PowerShell multi-tab instances that auto-resize fluidly.
+10. **System Monitoring**: A 60-FPS push-based telemetry engine (`systeminformation` + `recharts`) tracking CPU, RAM, Network I/O, and physical disk S.M.A.R.T status in real-time.
 
-- **Port Manager:** Discover, monitor, and terminate conflicting ports.
-- **Process Manager:** Inspect process trees, monitor CPU/Memory, suspend, or kill processes.
-- **Docker Manager:** Full orchestration, container inspection, and log streaming.
-- **Database Manager:** Unified UI to connect and query SQLite, Postgres, MySQL, and Redis.
-- **System Telemetry:** Real-time hardware and network monitoring.
-- **Plugin Architecture:** Deeply extensible SDK for custom automation.
+## 🚀 Installation & Build
 
-## Architecture
+### Developer Setup
 
-DevDock is a monorepo powered by **Turborepo** and **pnpm**.
-
-- **Frontend:** React 18, Vite, Tailwind CSS, Shadcn UI, Zustand, TanStack Query.
-- **Desktop Shell:** Electron (Strict Context Isolation, No Node Integration in Renderer).
-- **Backend Services:** Node.js, Better SQLite3, Drizzle ORM.
-- **Validation:** End-to-end Zod schemas across the IPC boundary.
-
-The architecture strictly follows Domain-Driven Design. UI is completely decoupled from OS logic.
-
-## Installation
-
-### Prerequisites
-- Node.js >= 18
-- pnpm >= 9
-
-### Getting Started
 ```bash
 # Clone the repository
 git clone https://github.com/mdtanvirahamedshanto/DevDock.git
-cd DevDock
 
-# Install dependencies
+# Install dependencies (requires Pnpm)
 pnpm install
 
-# Start the development server
+# Start the TurboRepo dev servers (React frontend + Electron backend)
 pnpm run dev
 ```
 
-## Contributing
+### Production Release
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct, development workflow, and the process for submitting Pull Requests.
+DevDock automatically compiles installers for Mac (`.dmg`), Windows (`.exe`), and Linux (`.AppImage`) via GitHub Actions.
 
-### Monorepo Structure
-- `apps/desktop`: The main Electron shell and React UI.
-- `packages/*`: Highly decoupled domain packages (e.g., `system`, `ports`, `database`).
+To trigger a build:
 
-## License
+1. Commit your changes.
+2. Create and push a tag:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+3. GitHub Actions will handle compiling native dependencies (`node-pty`, `sqlite3`, etc.), packaging the app via `electron-builder`, and uploading it to the GitHub Releases page.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🏗️ Architecture
+
+DevDock utilizes a highly modular **TurboRepo** architecture. The `apps/desktop` package acts purely as a UI renderer and an IPC router. All actual operating system logic is isolated into independent node modules:
+
+- `@devdock/core`: App Recovery, Logging, Global Events.
+- `@devdock/ui`: Shadcn/Radix primitive components.
+- `@devdock/system`, `@devdock/processes`, `@devdock/ports`, `@devdock/monitoring`: Native telemetry engines.
+- `@devdock/projects`, `@devdock/files`: High-performance filesystem crawlers.
+- `@devdock/database`, `@devdock/docker`, `@devdock/git`, `@devdock/terminal`: Wrappers for external developer tooling.

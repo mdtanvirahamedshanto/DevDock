@@ -1,0 +1,37 @@
+appId: com.devdock.app
+productName: DevDock
+directories:
+  output: release/${version}
+  buildResources: build
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.developer-tools
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  hardenedRuntime: true
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+linux:
+  target:
+    - target: AppImage
+    - target: snap
+  category: Development
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+publish:
+  provider: github
+  owner: mdtanvirahamedshanto
+  repo: DevDock

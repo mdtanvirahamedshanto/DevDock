@@ -12,6 +12,7 @@ import { gitEngine } from '@devdock/git';
 import { fileScanner } from '@devdock/files';
 import { terminalEngine } from '@devdock/terminal';
 import { monitoringEngine } from '@devdock/monitoring';
+import { initializeUpdater } from './updater';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -116,11 +117,17 @@ app.whenReady().then(async () => {
   await bootSequence();
   setupNativeMenus();
 
-  const mainWindow = windowManager.createMainWindow(
+  console.log('[Boot] Spawning main window...');
+  const mainWindow = await windowManager.createMainWindow(
     join(__dirname, '../preload/index.js'),
     join(__dirname, '../renderer/index.html'),
     process.env.VITE_DEV_SERVER_URL,
   );
+
+  console.log('[Boot] Initializing auto updater...');
+  initializeUpdater();
+
+  console.log('[Boot] Sequence complete.');
 
   // Broadcast system metrics every 2 seconds
   setInterval(async () => {
