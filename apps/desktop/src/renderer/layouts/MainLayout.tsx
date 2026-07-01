@@ -34,6 +34,8 @@ export const MainLayout: React.FC = () => {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background relative">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none" />
+      {/* Global invisible drag bar for the absolute top edge */}
+      <div className="absolute top-0 left-0 w-full h-4 app-draggable z-50" />
       <Sidebar />
       <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10 p-4">
         {/* Main Content Area in rounded glassmorphism wrapper */}
