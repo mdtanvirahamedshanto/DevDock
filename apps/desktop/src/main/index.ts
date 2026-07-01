@@ -9,6 +9,7 @@ import { scanWorkspace, projectRunner, readEnvFile, writeEnvFile } from '@devdoc
 import { dbManager } from '@devdock/database';
 import { dockerEngine } from '@devdock/docker';
 import { gitEngine } from '@devdock/git';
+import { fileScanner } from '@devdock/files';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -344,5 +345,19 @@ ipcMain.handle('git:stash', async (_, { path, message }) => {
 
 ipcMain.handle('git:checkout', async (_, { path, branch }) => {
   const success = await gitEngine.checkout(path, branch);
+  return { success };
+});
+
+// Files IPC
+ipcMain.handle('files:large', async (_, { path, minSizeMB }) => {
+  return await fileScanner.findLargeFiles(path, minSizeMB);
+});
+
+ipcMain.handle('files:duplicates', async (_, { path }) => {
+  return await fileScanner.findDuplicates(path);
+});
+
+ipcMain.handle('files:delete', async (_, { path }) => {
+  const success = await fileScanner.deleteFile(path);
   return { success };
 });

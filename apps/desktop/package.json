@@ -12,6 +12,7 @@
     "@devdock/core": "workspace:*",
     "@devdock/ipc": "workspace:*",
     "@devdock/ui": "workspace:*",
+    "@devdock/files": "workspace:*",
     "@tanstack/react-query": "^5.28.0",
     "lucide-react": "^0.368.0",
     "react": "^18.2.0",

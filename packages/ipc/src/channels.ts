@@ -1,5 +1,8 @@
 export const IPC_CHANNELS = {
   SYSTEM_INFO: 'system:info',
+  FILES_LARGE: 'files:large',
+  FILES_DUPLICATES: 'files:duplicates',
+  FILES_DELETE: 'files:delete',
   GIT_STATUS: 'git:status',
   GIT_BRANCHES: 'git:branches',
   GIT_COMMIT: 'git:commit',

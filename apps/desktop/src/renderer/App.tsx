@@ -10,6 +10,7 @@ import { Projects } from './pages/Projects';
 import { Databases } from './pages/Databases';
 import { Docker } from './pages/Docker';
 import { Git } from './pages/Git';
+import { Files } from './pages/Files';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Toaster } from '@devdock/ui';
 import './index.css';
@@ -32,6 +33,7 @@ export const App: React.FC = () => {
               <Route path="databases" element={<Databases />} />
               <Route path="docker" element={<Docker />} />
               <Route path="git" element={<Git />} />
+              <Route path="files" element={<Files />} />
               <Route path="settings" element={<SettingsPage />} />
               {/* Other routes placeholder */}
               <Route path="*" element={<div className="p-6">Work in progress...</div>} />
