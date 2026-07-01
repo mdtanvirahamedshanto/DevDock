@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Cpu } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const CPUModule: React.FC = () => {
   const { history } = useMonitoringStore();

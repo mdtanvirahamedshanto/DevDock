@@ -8,10 +8,10 @@ export class TerminalEngine {
   spawn(shell: string, cwd: string, onData: (id: string, data: string) => void): string {
     const id = uuidv4();
 
-    // Determine the default shell if not provided
     let executable = shell;
     if (!executable) {
-      executable = os.platform() === 'win32' ? 'powershell.exe' : process.env.SHELL || '/bin/bash';
+      // Use absolute path for macOS to avoid posix_spawn errors
+      executable = os.platform() === 'win32' ? 'powershell.exe' : '/bin/zsh';
     }
 
     const ptyProcess = pty.spawn(executable, [], {
