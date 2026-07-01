@@ -51,7 +51,21 @@ DevDock is automatically compiled for macOS, Windows, and Linux.
 
 ## 📸 Screenshots
 
-_(Add screenshots of the Dashboard, Terminal, Docker Manager, and Tray Popup here!)_
+### Dashboard Overview
+
+![Dashboard Overview](apps/website/assets/images/screenshot-overview.png)
+
+### System CPU & Memory Monitor
+
+![System Monitor](apps/website/assets/images/screenshot-cpu.png)
+
+### Active Port Manager
+
+![Port Manager](apps/website/assets/images/screenshot-ports.png)
+
+### Hardware Telemetry
+
+![Hardware Telemetry](apps/website/assets/images/screenshot-telemetry.png)
 
 ---
 
