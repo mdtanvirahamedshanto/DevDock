@@ -120,7 +120,11 @@ export const Dashboard: React.FC = () => {
         transition={{ duration: 0.5, delay: 0.6 }}
         className="flex-1 rounded-xl bg-card/30 backdrop-blur border border-border/50 p-8 flex flex-col items-center justify-center text-center space-y-4"
       >
-        <Activity className="w-12 h-12 text-muted-foreground/30" />
+        <img
+          src="/logo.png"
+          alt="Telemetry Engine"
+          className="w-16 h-16 object-contain opacity-70"
+        />
         <h3 className="text-xl font-medium text-muted-foreground">DevDock Telemetry Engine</h3>
         <p className="text-sm text-muted-foreground/70 max-w-md">
           Monitoring 6 core subsystems in real-time. Use the sidebar to drill down into specific

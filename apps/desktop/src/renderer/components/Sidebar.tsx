@@ -31,9 +31,11 @@ export const Sidebar: React.FC = () => {
   return (
     <div className="w-64 h-full bg-background/50 backdrop-blur-xl border-r border-border/50 flex flex-col pt-6 relative z-50">
       <div className="px-6 mb-8 flex items-center space-x-3">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/20">
-          <span className="text-white font-bold text-lg">D</span>
-        </div>
+        <img
+          src="/logo.png"
+          alt="DevDock Logo"
+          className="w-9 h-9 object-contain rounded-xl shadow-lg shadow-primary/20"
+        />
         <h1 className="text-xl font-bold tracking-tight text-foreground/90">DevDock</h1>
       </div>
 
