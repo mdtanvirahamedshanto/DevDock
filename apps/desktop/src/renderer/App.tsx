@@ -24,7 +24,6 @@ export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        {/* We use MemoryRouter for Electron apps to prevent path issues in prod */}
         <MemoryRouter>
           <Routes>
             <Route path="/" element={<MainLayout />}>
@@ -39,8 +38,14 @@ export const App: React.FC = () => {
               <Route path="terminal" element={<TerminalPage />} />
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="settings" element={<SettingsPage />} />
-              {/* Other routes placeholder */}
-              <Route path="*" element={<div className="p-6">Work in progress...</div>} />
+              <Route
+                path="*"
+                element={
+                  <div className="p-6 text-muted-foreground flex h-full items-center justify-center">
+                    Work in progress...
+                  </div>
+                }
+              />
             </Route>
           </Routes>
         </MemoryRouter>

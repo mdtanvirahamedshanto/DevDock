@@ -1,201 +1,132 @@
-import React, { useEffect, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@devdock/ui';
-import { useSystemStore } from '../store/useSystemStore';
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import {
-  Cpu,
-  MemoryStick,
-  HardDrive,
-  Wifi,
-  Battery,
-  Fan,
-  Thermometer,
-  Monitor,
-} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Card } from '@devdock/ui';
+import { motion } from 'framer-motion';
+import { Activity, Box, HardDrive, Cpu, Database, Globe, TerminalSquare } from 'lucide-react';
+import { useMonitoringStore } from '../store/useMonitoringStore';
+
+const DashboardCard: React.FC<{
+  title: string;
+  value: string;
+  icon: React.ReactNode;
+  delay: number;
+}> = ({ title, value, icon, delay }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{ scale: 1.02 }}
+      className="group"
+    >
+      <Card className="relative overflow-hidden bg-card/50 backdrop-blur-sm border-white/10 hover:border-primary/50 transition-colors p-6 h-full cursor-pointer">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="relative z-10 flex flex-col justify-between h-full space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-muted-foreground font-medium">{title}</h3>
+            <div className="p-2 bg-primary/10 rounded-lg text-primary group-hover:scale-110 transition-transform">
+              {icon}
+            </div>
+          </div>
+          <div>
+            <span className="text-4xl font-bold tracking-tight text-foreground">{value}</span>
+          </div>
+        </div>
+      </Card>
+    </motion.div>
+  );
+};
 
 export const Dashboard: React.FC = () => {
-  const { metrics, history, startListening } = useSystemStore();
+  const { latest, startMonitoring, stopMonitoring } = useMonitoringStore();
 
   useEffect(() => {
-    startListening();
-  }, [startListening]);
+    startMonitoring();
+    return () => stopMonitoring();
+  }, [startMonitoring, stopMonitoring]);
 
-  const cpuData = useMemo(
-    () => history.map((m, i) => ({ time: i, load: m.cpu.currentLoad })),
-    [history],
-  );
-  const ramData = useMemo(
-    () => history.map((m, i) => ({ time: i, used: (m.mem.used / 1024 / 1024 / 1024).toFixed(2) })),
-    [history],
-  );
-
-  if (!metrics) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center space-y-4">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-muted-foreground font-medium">Initializing Native Telemetry...</p>
-        </div>
-      </div>
-    );
-  }
-
-  const mainDrive = metrics.storage[0] || { total: 0, used: 0, free: 0 };
-  const mainNet = metrics.network[0] || { rx_sec: 0, tx_sec: 0 };
-  const mainGpu = metrics.gpu.controllers[0] || { vendor: 'N/A', model: 'Unknown', vram: 0 };
+  const stats = [
+    {
+      title: 'CPU Usage',
+      value: latest ? `${latest.cpu.load.toFixed(1)}%` : '--',
+      icon: <Cpu className="w-5 h-5" />,
+    },
+    {
+      title: 'Memory Usage',
+      value: latest ? `${latest.mem.percentage.toFixed(1)}%` : '--',
+      icon: <HardDrive className="w-5 h-5" />,
+    },
+    {
+      title: 'Running Containers',
+      value: '3', // Mock
+      icon: <Box className="w-5 h-5" />,
+    },
+    {
+      title: 'Active Ports',
+      value: '12', // Mock
+      icon: <Globe className="w-5 h-5" />,
+    },
+    {
+      title: 'Connected DBs',
+      value: '2', // Mock
+      icon: <Database className="w-5 h-5" />,
+    },
+    {
+      title: 'Active Terminals',
+      value: '1', // Mock
+      icon: <TerminalSquare className="w-5 h-5" />,
+    },
+  ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col space-y-8 max-w-6xl mx-auto w-full h-full">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex items-center justify-between"
+      >
         <div>
-          <h2 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-            System Telemetry
+          <h2 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">
+            Overview
           </h2>
           <p className="text-muted-foreground mt-1">
-            {metrics.os.distro} {metrics.os.release} ({metrics.os.arch})
+            Welcome back. Here is the current status of your workspace.
           </p>
         </div>
+        <div className="flex items-center space-x-2">
+          <span className="relative flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+          </span>
+          <span className="text-sm font-medium text-primary">System Normal</span>
+        </div>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {stats.map((stat, i) => (
+          <DashboardCard
+            key={stat.title}
+            title={stat.title}
+            value={stat.value}
+            icon={stat.icon}
+            delay={i * 0.1}
+          />
+        ))}
       </div>
 
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        {/* CPU Widget */}
-        <Card className="col-span-2 overflow-hidden relative group border-primary/20 bg-gradient-to-b from-card to-card/50">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 z-10 relative">
-            <CardTitle className="text-sm font-medium flex items-center space-x-2 text-primary">
-              <Cpu className="w-4 h-4" />
-              <span>
-                {metrics.cpu.brand} ({metrics.cpu.cores} Cores)
-              </span>
-            </CardTitle>
-            <span className="text-2xl font-bold">{metrics.cpu.currentLoad.toFixed(1)}%</span>
-          </CardHeader>
-          <CardContent className="p-0 h-32 mt-4 relative z-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={cpuData}>
-                <defs>
-                  <linearGradient id="cpuGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <Area
-                  type="monotone"
-                  dataKey="load"
-                  stroke="hsl(var(--primary))"
-                  fillOpacity={1}
-                  fill="url(#cpuGradient)"
-                  isAnimationActive={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* RAM Widget */}
-        <Card className="col-span-2 overflow-hidden relative group border-primary/20 bg-gradient-to-b from-card to-card/50">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 z-10 relative">
-            <CardTitle className="text-sm font-medium flex items-center space-x-2 text-primary">
-              <MemoryStick className="w-4 h-4" />
-              <span>Memory ({(metrics.mem.total / 1024 / 1024 / 1024).toFixed(1)} GB Total)</span>
-            </CardTitle>
-            <span className="text-2xl font-bold">
-              {((metrics.mem.used / metrics.mem.total) * 100).toFixed(1)}%
-            </span>
-          </CardHeader>
-          <CardContent className="p-0 h-32 mt-4 relative z-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={ramData}>
-                <defs>
-                  <linearGradient id="ramGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <Area
-                  type="monotone"
-                  dataKey="used"
-                  stroke="hsl(var(--chart-2))"
-                  fillOpacity={1}
-                  fill="url(#ramGradient)"
-                  isAnimationActive={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Storage Widget */}
-        <Card className="hover:border-primary/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium flex items-center space-x-2 text-muted-foreground">
-              <HardDrive className="w-4 h-4" />
-              <span>Main SSD</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {((mainDrive.used / mainDrive.total) * 100 || 0).toFixed(1)}%
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {(mainDrive.free / 1024 / 1024 / 1024).toFixed(1)} GB free
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Network Widget */}
-        <Card className="hover:border-primary/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium flex items-center space-x-2 text-muted-foreground">
-              <Wifi className="w-4 h-4" />
-              <span>Network Tx/Rx</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{(mainNet.rx_sec / 1024).toFixed(1)} KB/s</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Up: {(mainNet.tx_sec / 1024).toFixed(1)} KB/s
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* GPU Widget */}
-        <Card className="hover:border-primary/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium flex items-center space-x-2 text-muted-foreground">
-              <Monitor className="w-4 h-4" />
-              <span>GPU Engine</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold truncate">{mainGpu.vendor}</div>
-            <p className="text-xs text-muted-foreground mt-1 truncate">{mainGpu.model}</p>
-          </CardContent>
-        </Card>
-
-        {/* Temp/Battery Widget */}
-        <Card className="hover:border-primary/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium flex items-center space-x-2 text-muted-foreground">
-              {metrics.battery.hasBattery ? (
-                <Battery className="w-4 h-4" />
-              ) : (
-                <Thermometer className="w-4 h-4" />
-              )}
-              <span>{metrics.battery.hasBattery ? 'Battery' : 'Core Temp'}</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {metrics.battery.hasBattery
-                ? `${metrics.battery.percent}%`
-                : `${metrics.cpu.temperature > 0 ? metrics.cpu.temperature + '°C' : 'N/A'}`}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {metrics.battery.hasBattery && metrics.battery.isCharging ? 'Charging' : 'Optimal'}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="flex-1 rounded-xl bg-card/30 backdrop-blur border border-white/5 p-8 flex flex-col items-center justify-center text-center space-y-4"
+      >
+        <Activity className="w-12 h-12 text-muted-foreground/30" />
+        <h3 className="text-xl font-medium text-muted-foreground">DevDock Telemetry Engine</h3>
+        <p className="text-sm text-muted-foreground/70 max-w-md">
+          Monitoring 6 core subsystems in real-time. Use the sidebar to drill down into specific
+          services.
+        </p>
+      </motion.div>
     </div>
   );
 };
