@@ -162,54 +162,9 @@
             
             <!-- Dashboard Mockup Placeholder -->
             <div class="w-full max-w-6xl mx-auto px-4 mt-20 animate-on-scroll delay-200">
-                <div class="relative rounded-xl overflow-hidden border border-border shadow-2xl glass aspect-[16/10] sm:aspect-video flex flex-col bg-background/90">
-                    <!-- Fake Mac Window Bar -->
-                    <div class="h-10 border-b border-border/50 bg-muted/30 flex items-center px-4 gap-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                        <div class="ml-auto text-xs font-medium text-muted-foreground opacity-50">DevDock Preview</div>
-                    </div>
-                    <!-- Fake Content -->
-                    <div class="flex flex-1 overflow-hidden">
-                        <!-- Sidebar -->
-                        <div class="w-48 border-r border-border/50 bg-muted/10 hidden sm:flex flex-col p-4 gap-2">
-                            <div class="h-8 w-3/4 rounded bg-primary/20 mb-4"></div>
-                            <div class="h-6 w-full rounded bg-accent"></div>
-                            <div class="h-6 w-5/6 rounded bg-transparent hover:bg-accent/50 border border-transparent"></div>
-                            <div class="h-6 w-4/6 rounded bg-transparent hover:bg-accent/50 border border-transparent"></div>
-                            <div class="h-6 w-full rounded bg-transparent hover:bg-accent/50 border border-transparent"></div>
-                            <div class="mt-auto h-8 w-8 rounded-full bg-accent"></div>
-                        </div>
-                        <!-- Main Area -->
-                        <div class="flex-1 p-6 flex flex-col gap-6">
-                            <div class="flex justify-between items-center">
-                                <div class="h-8 w-48 rounded bg-accent"></div>
-                                <div class="h-8 w-24 rounded bg-primary/10"></div>
-                            </div>
-                            <!-- Charts -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="h-32 rounded-lg border border-border/50 bg-card/50 flex items-end p-4 gap-2">
-                                    <div class="w-full h-2/3 bg-blue-500/20 rounded-t"></div>
-                                    <div class="w-full h-full bg-blue-500/40 rounded-t"></div>
-                                    <div class="w-full h-1/2 bg-blue-500/20 rounded-t"></div>
-                                </div>
-                                <div class="h-32 rounded-lg border border-border/50 bg-card/50 flex items-end p-4 gap-2">
-                                    <div class="w-full h-1/4 bg-purple-500/20 rounded-t"></div>
-                                    <div class="w-full h-2/4 bg-purple-500/40 rounded-t"></div>
-                                    <div class="w-full h-full bg-purple-500/60 rounded-t"></div>
-                                </div>
-                                <div class="h-32 rounded-lg border border-border/50 bg-card/50 hidden md:block"></div>
-                            </div>
-                            <!-- Table -->
-                            <div class="flex-1 rounded-lg border border-border/50 bg-card/50 p-4 flex flex-col gap-3">
-                                <div class="h-6 w-full bg-muted rounded"></div>
-                                <div class="h-6 w-full bg-muted/50 rounded"></div>
-                                <div class="h-6 w-full bg-muted/30 rounded"></div>
-                                <div class="h-6 w-full bg-muted/10 rounded"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="relative rounded-xl overflow-hidden shadow-2xl glass border border-border">
+                    <!-- App Screenshot -->
+                    <img src="assets/images/screenshot-overview.png" alt="DevDock Dashboard" class="w-full h-auto rounded-xl">
                 </div>
             </div>
         </section>
@@ -261,7 +216,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Feature Card -->
                     <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll">
-                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        <img src="assets/images/screenshot-cpu.png" alt="System Monitor" class="w-full rounded-lg mb-4 shadow-md border border-border aspect-video object-cover object-top">
                         <h4 class="font-bold mb-2">System Monitor</h4>
                         <p class="text-sm text-muted-foreground">Real-time CPU, Memory, and Disk usage via beautiful dynamic charts.</p>
                     </div>
@@ -273,7 +228,7 @@
                     </div>
                     <!-- Feature Card -->
                     <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-200">
-                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <img src="assets/images/screenshot-ports.png" alt="Port Manager" class="w-full rounded-lg mb-4 shadow-md border border-border aspect-video object-cover object-top">
                         <h4 class="font-bold mb-2">Port Manager</h4>
                         <p class="text-sm text-muted-foreground">"Port 3000 is already in use"? Find it and kill it with one click.</p>
                     </div>
@@ -285,9 +240,9 @@
                     </div>
                     <!-- Feature Card -->
                     <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll">
-                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
-                        <h4 class="font-bold mb-2">Project Manager</h4>
-                        <p class="text-sm text-muted-foreground">Scan your workspace, parse package.json, and launch dev servers effortlessly.</p>
+                        <img src="assets/images/screenshot-telemetry.png" alt="Telemetry Engine" class="w-full rounded-lg mb-4 shadow-md border border-border aspect-video object-cover object-top">
+                        <h4 class="font-bold mb-2">Device Telemetry</h4>
+                        <p class="text-sm text-muted-foreground">Detailed insights into your system hardware, temperatures, and sensors.</p>
                     </div>
                     <!-- Feature Card -->
                     <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-100">
