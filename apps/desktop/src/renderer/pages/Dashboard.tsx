@@ -37,7 +37,8 @@ const DashboardCard: React.FC<{
 };
 
 export const Dashboard: React.FC = () => {
-  const { latest, startMonitoring, stopMonitoring } = useMonitoringStore();
+  const { history, startMonitoring, stopMonitoring } = useMonitoringStore();
+  const latest = history.length > 0 ? history[history.length - 1] : null;
 
   useEffect(() => {
     startMonitoring();
