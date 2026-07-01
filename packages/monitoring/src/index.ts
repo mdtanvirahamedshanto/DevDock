@@ -1,1 +1,1 @@
-export const name = '@devdock/monitoring';
+export * from './engine';

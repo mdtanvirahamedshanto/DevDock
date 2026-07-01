@@ -1,5 +1,8 @@
 export const IPC_CHANNELS = {
   SYSTEM_INFO: 'system:info',
+  MONITORING_START: 'monitoring:start',
+  MONITORING_STOP: 'monitoring:stop',
+  MONITORING_HEALTH: 'monitoring:health',
   TERMINAL_SPAWN: 'terminal:spawn',
   TERMINAL_WRITE: 'terminal:write',
   TERMINAL_RESIZE: 'terminal:resize',

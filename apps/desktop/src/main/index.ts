@@ -11,6 +11,7 @@ import { dockerEngine } from '@devdock/docker';
 import { gitEngine } from '@devdock/git';
 import { fileScanner } from '@devdock/files';
 import { terminalEngine } from '@devdock/terminal';
+import { monitoringEngine } from '@devdock/monitoring';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -381,4 +382,24 @@ ipcMain.on('terminal:resize', (_, { id, cols, rows }) => {
 
 ipcMain.on('terminal:kill', (_, { id }) => {
   terminalEngine.kill(id);
+});
+
+// Monitoring IPC
+let monitoringInterval: NodeJS.Timeout | null = null;
+
+ipcMain.on('monitoring:start', (event) => {
+  if (monitoringInterval) clearInterval(monitoringInterval);
+  monitoringInterval = setInterval(async () => {
+    const tick = await monitoringEngine.getTick();
+    if (tick) event.sender.send('monitoring:tick', tick);
+  }, 1000);
+});
+
+ipcMain.on('monitoring:stop', () => {
+  if (monitoringInterval) clearInterval(monitoringInterval);
+  monitoringInterval = null;
+});
+
+ipcMain.handle('monitoring:health', async () => {
+  return await monitoringEngine.getHealth();
 });

@@ -12,6 +12,7 @@
     "@devdock/core": "workspace:*",
     "@devdock/files": "workspace:*",
     "@devdock/ipc": "workspace:*",
+    "@devdock/monitoring": "workspace:*",
     "@devdock/ui": "workspace:*",
     "@tanstack/react-query": "^5.28.0",
     "@xterm/addon-fit": "^0.11.0",
