@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevDock | The Ultimate Developer Dashboard</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="DevDock is a professional cross-platform desktop application for developers. Monitor processes, databases, Docker, ports, and more in one unified premium interface.">
+    <meta name="keywords" content="developer tools, docker gui, database gui, process manager, port manager, macos, windows, linux">
+    <meta name="author" content="DevDock Open Source Team">
+    <link rel="canonical" href="https://devdock.tashanto.com/">
+    
+    <!-- OpenGraph & Twitter Cards -->
+    <meta property="og:title" content="DevDock | The Ultimate Developer Dashboard">
+    <meta property="og:description" content="A professional cross-platform desktop application replacing Docker Desktop, Activity Monitor, TablePlus, and more.">
+    <meta property="og:image" content="https://devdock.tashanto.com/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://devdock.tashanto.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- Tailwind CSS (Zero Build Config) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          container: {
+            center: true,
+            padding: '2rem',
+            screens: {
+              '2xl': '1400px',
+            },
+          },
+          extend: {
+            colors: {
+              border: "hsl(var(--border))",
+              input: "hsl(var(--input))",
+              ring: "hsl(var(--ring))",
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: {
+                DEFAULT: "hsl(var(--primary))",
+                foreground: "hsl(var(--primary-foreground))",
+              },
+              secondary: {
+                DEFAULT: "hsl(var(--secondary))",
+                foreground: "hsl(var(--secondary-foreground))",
+              },
+              muted: {
+                DEFAULT: "hsl(var(--muted))",
+                foreground: "hsl(var(--muted-foreground))",
+              },
+              accent: {
+                DEFAULT: "hsl(var(--accent))",
+                foreground: "hsl(var(--accent-foreground))",
+              },
+              card: {
+                DEFAULT: "hsl(var(--card))",
+                foreground: "hsl(var(--card-foreground))",
+              },
+            },
+            borderRadius: {
+              lg: "var(--radius)",
+              md: "calc(var(--radius) - 2px)",
+              sm: "calc(var(--radius) - 4px)",
+            },
+          }
+        }
+      }
+    </script>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-primary/30">
+
+    <!-- Navigation -->
+    <header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <img src="assets/images/logo.png" alt="DevDock Logo" class="w-8 h-8 rounded-lg shadow-lg">
+                    <span class="font-bold text-lg tracking-tight">DevDock</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-muted-foreground">
+                    <a href="#features" class="px-3 py-2 rounded-md hover:text-foreground hover:bg-accent transition-colors">Features</a>
+                    <a href="#download" class="px-3 py-2 rounded-md hover:text-foreground hover:bg-accent transition-colors">Download</a>
+                    <a href="https://devdock.tashanto.com/docs" class="px-3 py-2 rounded-md hover:text-foreground hover:bg-accent transition-colors">Documentation</a>
+                    <a href="#roadmap" class="px-3 py-2 rounded-md hover:text-foreground hover:bg-accent transition-colors">Roadmap</a>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle" class="p-2 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors" aria-label="Toggle Dark Mode">
+                    <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+                <a href="https://github.com/mdtanvirahamedshanto/DevDock" target="_blank" class="hidden sm:flex items-center gap-2 px-3 py-1.5 text-sm font-medium border rounded-md hover:bg-accent transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    Star on GitHub
+                </a>
+                
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-foreground">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b bg-background px-4 py-4 space-y-2">
+            <a href="#features" class="block px-3 py-2 rounded-md hover:bg-accent text-foreground">Features</a>
+            <a href="#download" class="block px-3 py-2 rounded-md hover:bg-accent text-foreground">Download</a>
+            <a href="https://devdock.tashanto.com/docs" class="block px-3 py-2 rounded-md hover:bg-accent text-foreground">Documentation</a>
+            <a href="#roadmap" class="block px-3 py-2 rounded-md hover:bg-accent text-foreground">Roadmap</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 mt-16">
+        
+        <!-- Hero Section -->
+        <section class="relative pt-24 pb-32 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
+            <div class="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
+            
+            <div class="container relative z-10 mx-auto px-4 text-center max-w-4xl animate-on-scroll">
+                <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 text-sm border rounded-full bg-background/50 backdrop-blur border-primary/30 text-primary">
+                    <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span>
+                    DevDock v1.0.0 is now live
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
+                    The ultimate <br class="hidden md:block"/>
+                    <span class="text-gradient bg-gradient-to-r from-primary to-blue-400">developer dashboard</span>
+                </h1>
+                
+                <p class="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+                    Replace Docker Desktop, Activity Monitor, DBGate, and half your terminal tabs with one blindingly fast, native application.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                    <a href="#download" class="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 hover-lift">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download for macOS
+                    </a>
+                    <a href="https://github.com/mdtanvirahamedshanto/DevDock" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2 hover-lift">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                        View Source
+                    </a>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground font-medium">
+                    <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Open Source (MIT)</span>
+                    <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Cross Platform</span>
+                    <span class="flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Free Forever</span>
+                </div>
+            </div>
+            
+            <!-- Dashboard Mockup Placeholder -->
+            <div class="w-full max-w-6xl mx-auto px-4 mt-20 animate-on-scroll delay-200">
+                <div class="relative rounded-xl overflow-hidden border border-border shadow-2xl glass aspect-[16/10] sm:aspect-video flex flex-col bg-background/90">
+                    <!-- Fake Mac Window Bar -->
+                    <div class="h-10 border-b border-border/50 bg-muted/30 flex items-center px-4 gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        <div class="ml-auto text-xs font-medium text-muted-foreground opacity-50">DevDock Preview</div>
+                    </div>
+                    <!-- Fake Content -->
+                    <div class="flex flex-1 overflow-hidden">
+                        <!-- Sidebar -->
+                        <div class="w-48 border-r border-border/50 bg-muted/10 hidden sm:flex flex-col p-4 gap-2">
+                            <div class="h-8 w-3/4 rounded bg-primary/20 mb-4"></div>
+                            <div class="h-6 w-full rounded bg-accent"></div>
+                            <div class="h-6 w-5/6 rounded bg-transparent hover:bg-accent/50 border border-transparent"></div>
+                            <div class="h-6 w-4/6 rounded bg-transparent hover:bg-accent/50 border border-transparent"></div>
+                            <div class="h-6 w-full rounded bg-transparent hover:bg-accent/50 border border-transparent"></div>
+                            <div class="mt-auto h-8 w-8 rounded-full bg-accent"></div>
+                        </div>
+                        <!-- Main Area -->
+                        <div class="flex-1 p-6 flex flex-col gap-6">
+                            <div class="flex justify-between items-center">
+                                <div class="h-8 w-48 rounded bg-accent"></div>
+                                <div class="h-8 w-24 rounded bg-primary/10"></div>
+                            </div>
+                            <!-- Charts -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="h-32 rounded-lg border border-border/50 bg-card/50 flex items-end p-4 gap-2">
+                                    <div class="w-full h-2/3 bg-blue-500/20 rounded-t"></div>
+                                    <div class="w-full h-full bg-blue-500/40 rounded-t"></div>
+                                    <div class="w-full h-1/2 bg-blue-500/20 rounded-t"></div>
+                                </div>
+                                <div class="h-32 rounded-lg border border-border/50 bg-card/50 flex items-end p-4 gap-2">
+                                    <div class="w-full h-1/4 bg-purple-500/20 rounded-t"></div>
+                                    <div class="w-full h-2/4 bg-purple-500/40 rounded-t"></div>
+                                    <div class="w-full h-full bg-purple-500/60 rounded-t"></div>
+                                </div>
+                                <div class="h-32 rounded-lg border border-border/50 bg-card/50 hidden md:block"></div>
+                            </div>
+                            <!-- Table -->
+                            <div class="flex-1 rounded-lg border border-border/50 bg-card/50 p-4 flex flex-col gap-3">
+                                <div class="h-6 w-full bg-muted rounded"></div>
+                                <div class="h-6 w-full bg-muted/50 rounded"></div>
+                                <div class="h-6 w-full bg-muted/30 rounded"></div>
+                                <div class="h-6 w-full bg-muted/10 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why DevDock Section -->
+        <section id="why" class="py-24 bg-muted/30 border-y border-border/50">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">One tool. Complete control.</h2>
+                    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">Stop context switching between specialized apps. DevDock unifies your entire local development environment.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 rounded-2xl glass hover-lift animate-on-scroll delay-100">
+                        <div class="w-12 h-12 bg-primary/20 text-primary rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Blazing Fast</h3>
+                        <p class="text-muted-foreground">Built on Electron and React, highly optimized via Vite and native bindings. Zero lag, instant startup, minimal RAM footprint compared to Docker Desktop.</p>
+                    </div>
+                    
+                    <div class="p-8 rounded-2xl glass hover-lift animate-on-scroll delay-200">
+                        <div class="w-12 h-12 bg-primary/20 text-primary rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Built-in Database Center</h3>
+                        <p class="text-muted-foreground">Why pay for TablePlus? Connect directly to Postgres, MySQL, Redis, and SQLite locally without leaving your dashboard.</p>
+                    </div>
+                    
+                    <div class="p-8 rounded-2xl glass hover-lift animate-on-scroll delay-300">
+                        <div class="w-12 h-12 bg-primary/20 text-primary rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Cross Platform</h3>
+                        <p class="text-muted-foreground">First-class support for macOS (Apple Silicon & Intel), Windows, and Linux. Consistent UI and functionality everywhere.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section id="features" class="py-24">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <div class="mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Everything you need.</h2>
+                    <p class="text-lg text-muted-foreground">Every feature is designed to keep you in the flow.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        <h4 class="font-bold mb-2">System Monitor</h4>
+                        <p class="text-sm text-muted-foreground">Real-time CPU, Memory, and Disk usage via beautiful dynamic charts.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-100">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        <h4 class="font-bold mb-2">Process Manager</h4>
+                        <p class="text-sm text-muted-foreground">Find and kill rogue Node, Python, or Ruby processes instantly.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-200">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <h4 class="font-bold mb-2">Port Manager</h4>
+                        <p class="text-sm text-muted-foreground">"Port 3000 is already in use"? Find it and kill it with one click.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-300">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        <h4 class="font-bold mb-2">Docker Native</h4>
+                        <p class="text-sm text-muted-foreground">Manage containers, images, volumes, and networks directly via the Docker Engine API.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                        <h4 class="font-bold mb-2">Project Manager</h4>
+                        <p class="text-sm text-muted-foreground">Scan your workspace, parse package.json, and launch dev servers effortlessly.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-100">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        <h4 class="font-bold mb-2">Integrated Terminal</h4>
+                        <p class="text-sm text-muted-foreground">Native node-pty terminal emulator built with xterm.js right in the UI.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-200">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        <h4 class="font-bold mb-2">Plugin System</h4>
+                        <p class="text-sm text-muted-foreground">Extend functionality with the DevDock Plugin SDK. Write plugins in TypeScript.</p>
+                    </div>
+                    <!-- Feature Card -->
+                    <div class="p-6 border rounded-xl bg-card hover:bg-accent/50 transition-colors animate-on-scroll delay-300">
+                        <svg class="w-8 h-8 text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        <h4 class="font-bold mb-2">Theme Engine</h4>
+                        <p class="text-sm text-muted-foreground">Beautiful dark mode first design, but fully supports custom CSS variables and light themes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section id="download" class="py-24 bg-muted/30 border-y border-border/50">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Install DevDock</h2>
+                    <p class="text-lg text-muted-foreground">Available for all major operating systems.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- macOS -->
+                    <div class="p-8 border rounded-2xl bg-card flex flex-col hover-lift animate-on-scroll">
+                        <div class="w-12 h-12 bg-background border rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.015 7.64c-.035-2.035 1.66-3.036 1.737-3.087-1.127-1.64-2.884-1.859-3.513-1.884-1.493-.153-2.918.878-3.681.878-.76 0-1.928-.845-3.155-.823-1.597.025-3.076.927-3.896 2.364-1.656 2.868-.423 7.108 1.196 9.45.795 1.144 1.737 2.42 2.977 2.374 1.2-.047 1.66-.777 3.116-.777 1.455 0 1.876.777 3.136.75 1.282-.023 2.083-1.149 2.873-2.308 1.053-1.543 1.488-3.037 1.509-3.114-.035-.015-2.92-1.119-2.955-3.923zm-1.802-5.467c.655-.794 1.096-1.895.976-2.997-.935.038-2.082.62-2.756 1.413-.6.702-1.126 1.823-.984 2.903.993.077 2.062-.511 2.764-1.319z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">macOS</h3>
+                        <p class="text-sm text-muted-foreground mb-6">Requires macOS 11.0 or later.</p>
+                        
+                        <a href="https://devdock.tashanto.com/download/macos/arm64" class="w-full py-2 bg-primary text-primary-foreground text-center rounded-md font-medium mb-3 hover:opacity-90">Download Apple Silicon</a>
+                        <a href="https://devdock.tashanto.com/download/macos/x64" class="w-full py-2 bg-secondary text-secondary-foreground text-center rounded-md font-medium mb-6 hover:bg-accent border">Download Intel</a>
+                        
+                        <div class="mt-auto pt-6 border-t flex flex-col gap-2 text-xs text-muted-foreground">
+                            <div class="flex justify-between"><span>Version</span><span class="font-medium text-foreground">1.0.0</span></div>
+                            <div class="flex justify-between"><span>Format</span><span class="font-medium text-foreground">.dmg</span></div>
+                            <div class="flex justify-between"><span>Size</span><span class="font-medium text-foreground">84.2 MB</span></div>
+                            <div class="flex justify-between"><span>SHA256</span><span class="font-mono text-[10px] truncate w-24">a1b2c3d4...</span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Windows -->
+                    <div class="p-8 border rounded-2xl bg-card flex flex-col hover-lift animate-on-scroll delay-100">
+                        <div class="w-12 h-12 bg-background border rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v8.969H0V3.449zm10.569-1.5L24 0v10.871H10.569V1.949zM0 12.065h9.75v9.068L0 19.865v-7.8zm10.569.176H24V24l-13.431-1.921v-9.838z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">Windows</h3>
+                        <p class="text-sm text-muted-foreground mb-6">Requires Windows 10 or later.</p>
+                        
+                        <a href="https://devdock.tashanto.com/download/windows/x64" class="w-full py-2 bg-primary text-primary-foreground text-center rounded-md font-medium mb-3 hover:opacity-90">Download (x64)</a>
+                        <a href="https://devdock.tashanto.com/download/windows/arm64" class="w-full py-2 bg-secondary text-secondary-foreground text-center rounded-md font-medium mb-6 hover:bg-accent border">Download (ARM64)</a>
+                        
+                        <div class="mt-auto pt-6 border-t flex flex-col gap-2 text-xs text-muted-foreground">
+                            <div class="flex justify-between"><span>Version</span><span class="font-medium text-foreground">1.0.0</span></div>
+                            <div class="flex justify-between"><span>Format</span><span class="font-medium text-foreground">.exe (Installer)</span></div>
+                            <div class="flex justify-between"><span>Size</span><span class="font-medium text-foreground">76.5 MB</span></div>
+                            <div class="flex justify-between"><span>SHA256</span><span class="font-mono text-[10px] truncate w-24">f8e7d6c5...</span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Linux -->
+                    <div class="p-8 border rounded-2xl bg-card flex flex-col hover-lift animate-on-scroll delay-200">
+                        <div class="w-12 h-12 bg-background border rounded-lg flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.666 0C7.795 0 5.4 3.013 5.4 3.013s1.246.22 1.65.312c-.22.422-.44 1.137-.44 1.63 0 .736.312 1.045 1.046 1.137l.643-1.045c.422.385.935.53 1.577.623l.11-1.338c.642.018 1.357-.018 1.908-.11l.165 1.338c.55-.11 1.063-.33 1.485-.642L14.07 5.92c.734-.147 1.008-.477 1.008-1.229 0-.513-.183-1.173-.421-1.63.42-.093 1.668-.312 1.668-.312S14.15 0 11.667 0zM8.991 3.526c.367 0 .66.294.66.66 0 .368-.293.662-.66.662s-.66-.294-.66-.662c0-.366.293-.66.66-.66zm4.838 0c.367 0 .66.294.66.66 0 .368-.293.662-.66.662s-.66-.294-.66-.662c0-.366.293-.66.66-.66zm-5.04 3.393c-.66.018-1.282.164-1.85.457-.184.459-.368.991-.533 1.597-.164.605-.292 1.247-.421 1.944a14.28 14.28 0 00-1.742.605c-.605.257-.935.845-.935 1.577 0 1.266 1.082 1.835 1.467 2.055-.074.605-.129 1.137-.165 1.558a23.003 23.003 0 00-.074 1.174c.036 1.522.624 3.411 2.384 4.585 1.706 1.155 3.998 1.522 6.51 1.522 2.531 0 4.823-.367 6.528-1.522 1.76-1.174 2.348-3.063 2.384-4.585.037-.403 0-.788-.073-1.174-.037-.421-.092-.953-.165-1.558.385-.22 1.467-.789 1.467-2.055 0-.733-.33-1.32-.935-1.577a14.7 14.7 0 00-1.742-.605c-.129-.697-.275-1.34-.44-1.944-.165-.605-.349-1.137-.532-1.595-.568-.294-1.192-.44-1.852-.459-1.522.257-2.915.22-4.291.002z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">Linux</h3>
+                        <p class="text-sm text-muted-foreground mb-6">Ubuntu, Debian, Fedora, Arch.</p>
+                        
+                        <a href="https://devdock.tashanto.com/download/linux/AppImage" class="w-full py-2 bg-primary text-primary-foreground text-center rounded-md font-medium mb-3 hover:opacity-90">Download .AppImage</a>
+                        <div class="flex gap-2 mb-6">
+                            <a href="https://devdock.tashanto.com/download/linux/deb" class="flex-1 py-2 bg-secondary text-secondary-foreground text-center rounded-md font-medium hover:bg-accent border">.deb</a>
+                            <a href="https://devdock.tashanto.com/download/linux/rpm" class="flex-1 py-2 bg-secondary text-secondary-foreground text-center rounded-md font-medium hover:bg-accent border">.rpm</a>
+                        </div>
+                        
+                        <div class="mt-auto pt-6 border-t flex flex-col gap-2 text-xs text-muted-foreground">
+                            <div class="flex justify-between"><span>Version</span><span class="font-medium text-foreground">1.0.0</span></div>
+                            <div class="flex justify-between"><span>Format</span><span class="font-medium text-foreground">Various</span></div>
+                            <div class="flex justify-between"><span>Size</span><span class="font-medium text-foreground">~80.0 MB</span></div>
+                            <div class="flex justify-between"><span>SHA256</span><span class="font-mono text-[10px] truncate w-24">b9e4a1c2...</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <a href="https://github.com/mdtanvirahamedshanto/DevDock/releases" target="_blank" class="text-sm text-primary hover:underline">View full release notes on GitHub →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Open Source Section -->
+        <section class="py-24">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="animate-on-scroll">
+                        <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold rounded-full bg-primary/10 text-primary border border-primary/20">Open Source</div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Built by developers,<br/>for developers.</h2>
+                        <p class="text-lg text-muted-foreground mb-6">DevDock is proudly 100% open source under the MIT license. No telemetry tracking without consent, no paywalls, no limits.</p>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div>
+                                    <h5 class="font-semibold text-foreground">Community Driven</h5>
+                                    <p class="text-sm text-muted-foreground">Suggest features, report bugs, and vote on the roadmap.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div>
+                                    <h5 class="font-semibold text-foreground">Transparent Codebase</h5>
+                                    <p class="text-sm text-muted-foreground">Audit the security and performance yourself.</p>
+                                </div>
+                            </li>
+                        </ul>
+                        
+                        <div class="flex gap-4">
+                            <a href="https://github.com/mdtanvirahamedshanto/DevDock/pulls" target="_blank" class="px-6 py-2.5 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90">Contribute</a>
+                            <a href="https://github.com/sponsors/mdtanvirahamedshanto" target="_blank" class="px-6 py-2.5 bg-secondary text-secondary-foreground rounded-md font-medium border hover:bg-accent flex items-center gap-2">
+                                <svg class="w-4 h-4 text-pink-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                                Sponsor
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- GitHub Stats Mockup -->
+                    <div class="grid grid-cols-2 gap-4 animate-on-scroll delay-200">
+                        <div class="p-6 border rounded-xl bg-card hover:border-primary/50 transition-colors">
+                            <div class="text-3xl font-bold text-foreground mb-1">2.4k</div>
+                            <div class="text-sm text-muted-foreground flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                                GitHub Stars
+                            </div>
+                        </div>
+                        <div class="p-6 border rounded-xl bg-card hover:border-primary/50 transition-colors">
+                            <div class="text-3xl font-bold text-foreground mb-1">124</div>
+                            <div class="text-sm text-muted-foreground flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+                                Forks
+                            </div>
+                        </div>
+                        <div class="p-6 border rounded-xl bg-card hover:border-primary/50 transition-colors">
+                            <div class="text-3xl font-bold text-foreground mb-1">45</div>
+                            <div class="text-sm text-muted-foreground flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                Contributors
+                            </div>
+                        </div>
+                        <div class="p-6 border rounded-xl bg-card hover:border-primary/50 transition-colors">
+                            <div class="text-3xl font-bold text-foreground mb-1">MIT</div>
+                            <div class="text-sm text-muted-foreground flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                License
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap -->
+        <section id="roadmap" class="py-24 bg-muted/30 border-y border-border/50">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Roadmap</h2>
+                    <p class="text-lg text-muted-foreground">Here is what we are building next.</p>
+                </div>
+                
+                <div class="relative border-l border-primary/30 ml-3 md:ml-6 space-y-12">
+                    
+                    <div class="relative pl-8 md:pl-12 animate-on-scroll">
+                        <div class="absolute -left-2 top-1.5 w-4 h-4 rounded-full bg-primary border-4 border-background"></div>
+                        <h4 class="text-xl font-bold mb-1">v1.0.0 - Foundation (Live)</h4>
+                        <p class="text-muted-foreground">Core process, port, and docker management. Dark mode, React Native terminal.</p>
+                    </div>
+                    
+                    <div class="relative pl-8 md:pl-12 animate-on-scroll delay-100">
+                        <div class="absolute -left-2 top-1.5 w-4 h-4 rounded-full bg-muted border-4 border-background"></div>
+                        <h4 class="text-xl font-bold mb-1">v1.1.0 - Database Center (Q3)</h4>
+                        <p class="text-muted-foreground">Full TablePlus competitor built-in. Connect, query, and visualize Postgres, MySQL, and SQLite databases seamlessly.</p>
+                    </div>
+                    
+                    <div class="relative pl-8 md:pl-12 animate-on-scroll delay-200">
+                        <div class="absolute -left-2 top-1.5 w-4 h-4 rounded-full bg-muted border-4 border-background"></div>
+                        <h4 class="text-xl font-bold mb-1">v1.2.0 - Plugin API (Q4)</h4>
+                        <p class="text-muted-foreground">Public SDK for community plugins. Write plugins in TypeScript to manage AWS, Vercel, or custom internal tools.</p>
+                    </div>
+                    
+                    <div class="relative pl-8 md:pl-12 animate-on-scroll delay-300">
+                        <div class="absolute -left-2 top-1.5 w-4 h-4 rounded-full bg-muted border-4 border-background"></div>
+                        <h4 class="text-xl font-bold mb-1">v2.0.0 - AI Integration (Future)</h4>
+                        <p class="text-muted-foreground">Local LLM integrations to analyze stack traces, write SQL queries, and manage docker-compose files automatically.</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="py-24">
+            <div class="container mx-auto px-4 max-w-3xl">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+                </div>
+                
+                <div class="space-y-4 animate-on-scroll delay-100">
+                    <!-- FAQ 1 -->
+                    <div class="border rounded-lg bg-card overflow-hidden">
+                        <button class="accordion-trigger w-full px-6 py-4 flex justify-between items-center text-left hover:bg-accent/50 transition-colors">
+                            <span class="font-medium text-foreground">Is DevDock really free?</span>
+                            <svg class="accordion-icon w-5 h-5 text-muted-foreground shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner px-6 pb-4 text-muted-foreground">
+                                Yes. DevDock is 100% free and open-source under the MIT license. We believe developer tools should be accessible to everyone without arbitrary paywalls.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FAQ 2 -->
+                    <div class="border rounded-lg bg-card overflow-hidden">
+                        <button class="accordion-trigger w-full px-6 py-4 flex justify-between items-center text-left hover:bg-accent/50 transition-colors">
+                            <span class="font-medium text-foreground">Does it support Apple Silicon (M1/M2/M3)?</span>
+                            <svg class="accordion-icon w-5 h-5 text-muted-foreground shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner px-6 pb-4 text-muted-foreground">
+                                Absolutely. We provide native ARM64 binaries for macOS, ensuring maximum performance and battery life on Apple Silicon hardware.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FAQ 3 -->
+                    <div class="border rounded-lg bg-card overflow-hidden">
+                        <button class="accordion-trigger w-full px-6 py-4 flex justify-between items-center text-left hover:bg-accent/50 transition-colors">
+                            <span class="font-medium text-foreground">How does it integrate with Docker?</span>
+                            <svg class="accordion-icon w-5 h-5 text-muted-foreground shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner px-6 pb-4 text-muted-foreground">
+                                DevDock communicates directly with your local Docker daemon via the Docker Engine API socket. You must have Docker Engine or OrbStack running in the background for this feature to work.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FAQ 4 -->
+                    <div class="border rounded-lg bg-card overflow-hidden">
+                        <button class="accordion-trigger w-full px-6 py-4 flex justify-between items-center text-left hover:bg-accent/50 transition-colors">
+                            <span class="font-medium text-foreground">Will there be cloud synchronization?</span>
+                            <svg class="accordion-icon w-5 h-5 text-muted-foreground shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner px-6 pb-4 text-muted-foreground">
+                                Currently, all data is stored locally on your machine for maximum privacy. We are exploring opt-in encrypted cloud sync for settings and database connections in the future.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border/50 bg-muted/20 py-12">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2 md:col-span-1">
+                    <a href="/" class="flex items-center gap-2 mb-4">
+                        <img src="assets/images/logo.png" alt="DevDock Logo" class="w-8 h-8 rounded-lg">
+                        <span class="font-bold text-lg">DevDock</span>
+                    </a>
+                    <p class="text-sm text-muted-foreground">The ultimate open-source desktop application for developers.</p>
+                </div>
+                
+                <div>
+                    <h6 class="font-semibold mb-4 text-foreground">Product</h6>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><a href="#features" class="hover:text-primary transition-colors">Features</a></li>
+                        <li><a href="#download" class="hover:text-primary transition-colors">Download</a></li>
+                        <li><a href="#roadmap" class="hover:text-primary transition-colors">Roadmap</a></li>
+                        <li><a href="https://devdock.tashanto.com/changelog" class="hover:text-primary transition-colors">Changelog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h6 class="font-semibold mb-4 text-foreground">Resources</h6>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><a href="https://devdock.tashanto.com/docs" class="hover:text-primary transition-colors">Documentation</a></li>
+                        <li><a href="https://devdock.tashanto.com/api" class="hover:text-primary transition-colors">API Reference</a></li>
+                        <li><a href="https://github.com/mdtanvirahamedshanto/DevDock/issues" class="hover:text-primary transition-colors">Report a Bug</a></li>
+                        <li><a href="mailto:support@tashanto.com" class="hover:text-primary transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h6 class="font-semibold mb-4 text-foreground">Legal</h6>
+                    <ul class="space-y-2 text-sm text-muted-foreground">
+                        <li><a href="https://devdock.tashanto.com/privacy" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://devdock.tashanto.com/terms" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="https://github.com/mdtanvirahamedshanto/DevDock/blob/main/LICENSE" class="hover:text-primary transition-colors">License (MIT)</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-muted-foreground">© 2026 DevDock Open Source Team. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <a href="https://github.com/mdtanvirahamedshanto/DevDock" target="_blank" class="text-muted-foreground hover:text-foreground transition-colors" aria-label="GitHub">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-sm text-primary hover:underline">Back to top ↑</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

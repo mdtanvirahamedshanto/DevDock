@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found | DevDock</title>
+    
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    
+    <!-- Tailwind CSS (Zero Build Config) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: {
+                DEFAULT: "hsl(var(--primary))",
+                foreground: "hsl(var(--primary-foreground))",
+              }
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-center text-center px-4">
+    <div class="max-w-md w-full glass p-12 rounded-3xl border shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background opacity-50"></div>
+        <div class="relative z-10">
+            <h1 class="text-7xl font-extrabold tracking-tight mb-4 text-gradient bg-gradient-to-br from-primary to-blue-600">404</h1>
+            <h2 class="text-2xl font-bold mb-4">Page Not Found</h2>
+            <p class="text-muted-foreground mb-8">The page you are looking for has been moved, deleted, or possibly never existed.</p>
+            <a href="/" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity hover-lift">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Return to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>
