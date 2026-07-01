@@ -2,15 +2,21 @@
   "name": "devdock",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Md Tanvir Ahamed Shanto",
+    "email": "hello@tashanto.com"
+  },
+  "homepage": "https://devdock.tashanto.com",
   "main": "dist/main/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build && vite build --config vite.main.config.ts && vite build --config vite.preload.config.ts",
     "preview": "vite preview",
     "package:mac": "pnpm run build && electron-builder --mac",
-    "package:win": "pnpm run build && electron-builder --win",
-    "package:linux": "pnpm run build && electron-builder --linux",
-    "package:all": "pnpm run build && electron-builder -mwl"
+    "package:win": "pnpm run build && electron-builder --win --x64",
+    "package:linux": "pnpm run build && electron-builder --linux --x64",
+    "package:all": "pnpm run build && electron-builder -mwl",
+    "publish:local": "node scripts/publish-local.js"
   },
   "dependencies": {
     "@devdock/core": "workspace:*",
@@ -58,6 +64,7 @@
   "build": {
     "appId": "com.devdock.app",
     "productName": "DevDock",
+    "npmRebuild": false,
     "directories": {
       "output": "release",
       "buildResources": "build"

@@ -128,3 +128,10 @@ dist
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# DevDock specific build artifacts
+release/
+apps/website/download/mac/*.dmg
+apps/website/download/windows/*.exe
+apps/website/download/linux/*.AppImage
+apps/website/download/linux/*.deb

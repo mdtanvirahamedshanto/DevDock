@@ -616,10 +616,11 @@
             }
 
             // 3. Set Local Fallback URLs
-            const localMac = './download/mac/DevDock.dmg';
-            const localWin = './download/windows/DevDock.exe';
-            const localLinuxAppImage = './download/linux/DevDock.AppImage';
-            const localLinuxDeb = './download/linux/DevDock.deb';
+            const localVersion = 'v0.1.0';
+            const localMac = './download/mac/DevDock-0.1.0.dmg';
+            const localWin = './download/windows/DevDock-0.1.0.exe';
+            const localLinuxAppImage = './download/linux/DevDock-0.1.0.AppImage';
+            const localLinuxDeb = './download/linux/DevDock-0.1.0.deb';
             
             // Set defaults to local first
             document.getElementById('card-mac-dmg').href = localMac;
@@ -661,7 +662,7 @@
             } catch (error) {
                 console.log('Falling back to local /download/ directory due to API error or missing release:', error.message);
                 const versionElements = document.querySelectorAll('.release-version');
-                versionElements.forEach(el => el.innerText = "Local Build");
+                versionElements.forEach(el => el.innerText = localVersion + " (Local)");
             }
         });
     </script>
