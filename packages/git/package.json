@@ -4,9 +4,11 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
-  "dependencies": {},
+  "dependencies": {
+    "simple-git": "^3.36.0"
+  },
   "devDependencies": {
-    "@devdock/typescript-config": "workspace:*",
-    "@devdock/eslint-config": "workspace:*"
+    "@devdock/eslint-config": "workspace:*",
+    "@devdock/typescript-config": "workspace:*"
   }
 }

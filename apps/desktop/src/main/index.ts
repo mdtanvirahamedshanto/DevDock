@@ -8,6 +8,7 @@ import { portService } from '@devdock/ports';
 import { scanWorkspace, projectRunner, readEnvFile, writeEnvFile } from '@devdock/projects';
 import { dbManager } from '@devdock/database';
 import { dockerEngine } from '@devdock/docker';
+import { gitEngine } from '@devdock/git';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -310,4 +311,38 @@ ipcMain.handle('docker:action', async (_, { entity, action, id }) => {
   } catch (err: any) {
     return { success: false, error: err.message };
   }
+});
+
+// Git IPC
+ipcMain.handle('git:status', async (_, { path }) => {
+  return await gitEngine.status(path);
+});
+
+ipcMain.handle('git:branches', async (_, { path }) => {
+  return await gitEngine.branches(path);
+});
+
+ipcMain.handle('git:commit', async (_, { path, message, files }) => {
+  const success = await gitEngine.commit(path, message, files);
+  return { success };
+});
+
+ipcMain.handle('git:pull', async (_, { path }) => {
+  const success = await gitEngine.pull(path);
+  return { success };
+});
+
+ipcMain.handle('git:push', async (_, { path }) => {
+  const success = await gitEngine.push(path);
+  return { success };
+});
+
+ipcMain.handle('git:stash', async (_, { path, message }) => {
+  const success = await gitEngine.stash(path, message);
+  return { success };
+});
+
+ipcMain.handle('git:checkout', async (_, { path, branch }) => {
+  const success = await gitEngine.checkout(path, branch);
+  return { success };
 });

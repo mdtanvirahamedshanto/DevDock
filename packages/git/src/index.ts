@@ -1,1 +1,1 @@
-export const name = '@devdock/git';
+export * from './engine';

@@ -1,5 +1,12 @@
 export const IPC_CHANNELS = {
   SYSTEM_INFO: 'system:info',
+  GIT_STATUS: 'git:status',
+  GIT_BRANCHES: 'git:branches',
+  GIT_COMMIT: 'git:commit',
+  GIT_PULL: 'git:pull',
+  GIT_PUSH: 'git:push',
+  GIT_STASH: 'git:stash',
+  GIT_CHECKOUT: 'git:checkout',
   DOCKER_CONTAINERS: 'docker:containers',
   DOCKER_IMAGES: 'docker:images',
   DOCKER_VOLUMES: 'docker:volumes',
