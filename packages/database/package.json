@@ -4,9 +4,13 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
-  "dependencies": {},
+  "dependencies": {
+    "mysql2": "^3.22.5",
+    "pg": "^8.22.0"
+  },
   "devDependencies": {
+    "@devdock/eslint-config": "workspace:*",
     "@devdock/typescript-config": "workspace:*",
-    "@devdock/eslint-config": "workspace:*"
+    "@types/pg": "^8.20.0"
   }
 }

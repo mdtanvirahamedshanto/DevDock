@@ -8,6 +8,7 @@ import {
   Box,
   HardDrive,
   Terminal,
+  Database,
 } from 'lucide-react';
 import { Button } from '@devdock/ui';
 
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { path: '/', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
   { path: '/processes', label: 'Processes', icon: <Activity className="w-5 h-5" /> },
   { path: '/projects', label: 'Projects', icon: <Box className="w-5 h-5" /> },
+  { path: '/databases', label: 'Databases', icon: <Database className="w-5 h-5" /> },
   { path: '/git', label: 'Git', icon: <GitBranch className="w-5 h-5" /> },
   { path: '/terminal', label: 'Terminal', icon: <Terminal className="w-5 h-5" /> },
   { path: '/ports', label: 'Ports', icon: <HardDrive className="w-5 h-5" /> },

@@ -1,1 +1,2 @@
-export const name = '@devdock/database';
+export * from './types';
+export * from './manager';

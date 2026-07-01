@@ -6,6 +6,7 @@ import { getSystemMetrics } from '@devdock/system';
 import { processService } from '@devdock/processes';
 import { portService } from '@devdock/ports';
 import { scanWorkspace, projectRunner, readEnvFile, writeEnvFile } from '@devdock/projects';
+import { dbManager } from '@devdock/database';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -239,4 +240,41 @@ ipcMain.handle('projects:env:read', async (_, { path }) => {
 ipcMain.handle('projects:env:write', async (_, { path, env }) => {
   const success = await writeEnvFile(path, env);
   return { success };
+});
+
+// Database IPC
+ipcMain.handle('db:connect', async (_, config) => {
+  try {
+    await dbManager.connect(config);
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('db:disconnect', async (_, { id }) => {
+  try {
+    await dbManager.disconnect(id);
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('db:query', async (_, { id, sql }) => {
+  try {
+    const result = await dbManager.query(id, sql);
+    return { success: true, data: result };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('db:tables', async (_, { id }) => {
+  try {
+    const tables = await dbManager.getTables(id);
+    return { success: true, data: tables };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
 });
