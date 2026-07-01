@@ -623,16 +623,21 @@
             const localLinuxAppImage = './download/linux/DevDock-0.1.0.AppImage';
             const localLinuxDeb = './download/linux/DevDock-0.1.0.deb';
             
-            // Set defaults to local first
-            document.getElementById('card-mac-dmg').href = localMac;
-            document.getElementById('card-win-exe').href = localWin;
-            document.getElementById('card-linux-appimage').href = localLinuxAppImage;
-            document.getElementById('card-linux-deb').href = localLinuxDeb;
+            // Check if running locally
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+            
+            // Set defaults to local if testing locally, otherwise fallback to GitHub Releases page
+            const fallbackUrl = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+            
+            document.getElementById('card-mac-dmg').href = isLocal ? localMac : fallbackUrl;
+            document.getElementById('card-win-exe').href = isLocal ? localWin : fallbackUrl;
+            document.getElementById('card-linux-appimage').href = isLocal ? localLinuxAppImage : fallbackUrl;
+            document.getElementById('card-linux-deb').href = isLocal ? localLinuxDeb : fallbackUrl;
             
             const heroBtn = document.getElementById('hero-download-btn');
-            if (osType === 'mac') heroBtn.href = localMac;
-            else if (osType === 'win') heroBtn.href = localWin;
-            else if (osType === 'linux') heroBtn.href = localLinuxAppImage;
+            if (osType === 'mac') heroBtn.href = isLocal ? localMac : fallbackUrl;
+            else if (osType === 'win') heroBtn.href = isLocal ? localWin : fallbackUrl;
+            else if (osType === 'linux') heroBtn.href = isLocal ? localLinuxAppImage : fallbackUrl;
 
             // 4. Try to fetch from GitHub (Override if available)
             try {
