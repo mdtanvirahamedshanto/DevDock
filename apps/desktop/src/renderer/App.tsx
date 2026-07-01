@@ -13,6 +13,7 @@ import { Git } from './pages/Git';
 import { Files } from './pages/Files';
 import { TerminalPage } from './pages/TerminalPage';
 import { Monitoring } from './pages/Monitoring';
+import { TrayPopup } from './pages/TrayPopup';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Toaster } from '@devdock/ui';
 import './index.css';
@@ -20,7 +21,20 @@ import '@devdock/ui/src/globals.css';
 
 const queryClient = new QueryClient();
 
+// Detect if running in tray popup context (via URL hash)
+const isTrayPopup = window.location.hash === '#/tray';
+
 export const App: React.FC = () => {
+  if (isTrayPopup) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <TrayPopup />
+        </ThemeProvider>
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

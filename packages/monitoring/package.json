@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
+    "ping": "^1.0.0",
     "systeminformation": "^5.31.11"
   },
   "devDependencies": {

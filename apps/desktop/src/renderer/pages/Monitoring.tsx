@@ -37,14 +37,22 @@ const TABS = [
 ];
 
 export const Monitoring: React.FC = () => {
-  const { startMonitoring, stopMonitoring, fetchHealth } = useMonitoringStore();
+  const { startMonitoring, stopMonitoring, fetchHealth, fetchStaticInfo, fetchPing } =
+    useMonitoringStore();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
     startMonitoring();
     fetchHealth();
-    return () => stopMonitoring();
-  }, [startMonitoring, stopMonitoring, fetchHealth]);
+    fetchStaticInfo();
+    // Ping every 5 seconds (don't flood on 1s tick)
+    fetchPing();
+    const pingInterval = setInterval(fetchPing, 5000);
+    return () => {
+      stopMonitoring();
+      clearInterval(pingInterval);
+    };
+  }, [startMonitoring, stopMonitoring, fetchHealth, fetchStaticInfo, fetchPing]);
 
   const renderModule = () => {
     switch (activeTab) {

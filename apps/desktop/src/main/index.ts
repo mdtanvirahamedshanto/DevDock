@@ -1,4 +1,12 @@
-import { app, ipcMain, BrowserWindow, Menu, MenuItemConstructorOptions, dialog } from 'electron';
+import {
+  app,
+  ipcMain,
+  BrowserWindow,
+  Menu,
+  MenuItemConstructorOptions,
+  dialog,
+  WebContents,
+} from 'electron';
 import { join } from 'path';
 import { windowManager } from './WindowManager';
 import { recoveryManager } from '@devdock/core';
@@ -129,7 +137,7 @@ app.whenReady().then(async () => {
   initializeUpdater();
 
   console.log('[Boot] Setting up Tray and Auto-Start...');
-  initializeTray();
+  initializeTray(join(__dirname, '../preload/index.js'), process.env.VITE_DEV_SERVER_URL);
   setupAutoStart();
 
   console.log('[Boot] Sequence complete.');
@@ -397,27 +405,53 @@ ipcMain.on('terminal:kill', (_, { id }) => {
   terminalEngine.kill(id);
 });
 
-// Monitoring IPC
+// Monitoring IPC — Dynamic Polling Timer
 let monitoringInterval: NodeJS.Timeout | null = null;
+let monitoringIntervalMs = 1000;
+let monitoringSender: WebContents | null = null;
 
-ipcMain.on('monitoring:start', (event) => {
+function restartMonitoringLoop() {
   if (monitoringInterval) clearInterval(monitoringInterval);
+  if (!monitoringSender) return;
+  const sender = monitoringSender;
   monitoringInterval = setInterval(async () => {
-    const tick = await monitoringEngine.getTick();
-    if (tick && !event.sender.isDestroyed()) {
-      event.sender.send('monitoring:tick', tick);
-    } else if (event.sender.isDestroyed()) {
+    if (sender.isDestroyed()) {
       clearInterval(monitoringInterval!);
       monitoringInterval = null;
+      monitoringSender = null;
+      return;
     }
-  }, 1000);
+    const tick = await monitoringEngine.getTick();
+    if (tick && !sender.isDestroyed()) {
+      sender.send('monitoring:tick', tick);
+    }
+  }, monitoringIntervalMs);
+}
+
+ipcMain.on('monitoring:start', (event) => {
+  monitoringSender = event.sender;
+  restartMonitoringLoop();
 });
 
 ipcMain.on('monitoring:stop', () => {
   if (monitoringInterval) clearInterval(monitoringInterval);
   monitoringInterval = null;
+  monitoringSender = null;
+});
+
+ipcMain.on('monitoring:set-interval', (_, ms: number) => {
+  monitoringIntervalMs = ms;
+  restartMonitoringLoop();
 });
 
 ipcMain.handle('monitoring:health', async () => {
   return await monitoringEngine.getHealth();
+});
+
+ipcMain.handle('monitoring:static', async () => {
+  return await monitoringEngine.getStaticInfo();
+});
+
+ipcMain.handle('monitoring:ping', async () => {
+  return await monitoringEngine.getPing();
 });
