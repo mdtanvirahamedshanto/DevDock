@@ -13,6 +13,7 @@ import { fileScanner } from '@devdock/files';
 import { terminalEngine } from '@devdock/terminal';
 import { monitoringEngine } from '@devdock/monitoring';
 import { initializeUpdater } from './updater';
+import { initializeTray, setupAutoStart, showNotification } from './tray';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -127,7 +128,12 @@ app.whenReady().then(async () => {
   console.log('[Boot] Initializing auto updater...');
   initializeUpdater();
 
+  console.log('[Boot] Setting up Tray and Auto-Start...');
+  initializeTray();
+  setupAutoStart();
+
   console.log('[Boot] Sequence complete.');
+  showNotification('DevDock', 'Application successfully booted in the background.');
 
   // Broadcast system metrics every 2 seconds
   setInterval(async () => {

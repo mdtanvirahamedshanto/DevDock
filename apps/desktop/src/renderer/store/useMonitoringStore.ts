@@ -4,6 +4,7 @@ export interface TelemetryTick {
   cpu: { load: number; cores: number[] };
   mem: { total: number; used: number; percentage: number };
   network: { rx_sec: number; tx_sec: number };
+  hardware: { temp: number; fanRpm: number; gpuLoad: number };
   timestamp: number;
 }
 

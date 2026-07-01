@@ -21,7 +21,7 @@ import {
   Area,
   CartesianGrid,
 } from 'recharts';
-import { Cpu, MemoryStick, Activity, HardDrive } from 'lucide-react';
+import { Cpu, MemoryStick, Activity, HardDrive, Thermometer, Fan, Monitor } from 'lucide-react';
 
 export const Monitoring: React.FC = () => {
   const { history, disks, startMonitoring, stopMonitoring, fetchHealth } = useMonitoringStore();
@@ -57,6 +57,19 @@ export const Monitoring: React.FC = () => {
           <h2 className="text-3xl font-bold tracking-tight">System Telemetry</h2>
           <p className="text-muted-foreground">Real-time hardware monitoring and diagnostics.</p>
         </div>
+        {latest && (
+          <div className="flex space-x-4">
+            <Badge variant="outline" className="flex items-center">
+              <Thermometer className="w-3 h-3 mr-1" /> {latest.hardware.temp}°C
+            </Badge>
+            <Badge variant="outline" className="flex items-center">
+              <Fan className="w-3 h-3 mr-1" /> {latest.hardware.fanRpm} RPM
+            </Badge>
+            <Badge variant="outline" className="flex items-center">
+              <Monitor className="w-3 h-3 mr-1" /> GPU {latest.hardware.gpuLoad.toFixed(1)}%
+            </Badge>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

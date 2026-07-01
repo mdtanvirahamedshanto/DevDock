@@ -1,6 +1,9 @@
 import { IDatabaseDriver, DbConnectionConfig, DbQueryResult } from './types';
 import { PostgresDriver } from './drivers/postgres';
 import { MysqlDriver } from './drivers/mysql';
+import { SqliteDriver } from './drivers/sqlite';
+import { MongodbDriver } from './drivers/mongodb';
+import { RedisDriver } from './drivers/redis';
 
 export class DatabaseManager {
   private connections: Map<string, IDatabaseDriver> = new Map();
@@ -18,6 +21,15 @@ export class DatabaseManager {
       case 'mysql':
       case 'mariadb':
         driver = new MysqlDriver();
+        break;
+      case 'sqlite':
+        driver = new SqliteDriver();
+        break;
+      case 'mongodb':
+        driver = new MongodbDriver();
+        break;
+      case 'redis':
+        driver = new RedisDriver();
         break;
       default:
         throw new Error(`Unsupported engine: ${config.engine}`);

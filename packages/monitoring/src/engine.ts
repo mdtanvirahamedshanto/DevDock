@@ -3,10 +3,12 @@ import si from 'systeminformation';
 export class MonitoringEngine {
   async getTick() {
     try {
-      const [cpuLoad, mem, networkStats] = await Promise.all([
+      const [cpuLoad, mem, networkStats, temp, graphics] = await Promise.all([
         si.currentLoad(),
         si.mem(),
         si.networkStats(),
+        si.cpuTemperature(),
+        si.graphics(),
       ]);
 
       return {
@@ -22,6 +24,13 @@ export class MonitoringEngine {
         network: {
           rx_sec: networkStats[0]?.rx_sec || 0,
           tx_sec: networkStats[0]?.tx_sec || 0,
+        },
+        hardware: {
+          temp: temp.main || 0,
+          fanRpm: temp.max || 0, // Using max temp as fallback if fan isn't provided directly, some systems map it here
+          gpuLoad: graphics.controllers[0]?.memoryUsed
+            ? (graphics.controllers[0].memoryUsed / graphics.controllers[0].memoryTotal) * 100
+            : 0,
         },
         timestamp: Date.now(),
       };
