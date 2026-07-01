@@ -53,7 +53,7 @@ const XTermComponent: React.FC<{ tab: TerminalTab; isActive: boolean }> = ({ tab
       window.addEventListener('resize', handleResize);
 
       // Listen for data from main process
-      electronAPI.on(`terminal:data-${tab.ptyId}`, (_event: any, data: string) => {
+      electronAPI.on(`terminal:data-${tab.ptyId}`, (data: string) => {
         term.write(data);
       });
 

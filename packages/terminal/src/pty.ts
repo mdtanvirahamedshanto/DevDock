@@ -11,7 +11,7 @@ export class TerminalEngine {
     // Determine the default shell if not provided
     let executable = shell;
     if (!executable) {
-      executable = os.platform() === 'win32' ? 'powershell.exe' : process.env.SHELL || 'bash';
+      executable = os.platform() === 'win32' ? 'powershell.exe' : process.env.SHELL || '/bin/bash';
     }
 
     const ptyProcess = pty.spawn(executable, [], {

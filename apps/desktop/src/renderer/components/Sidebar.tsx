@@ -29,10 +29,7 @@ const NAV_ITEMS = [
 
 export const Sidebar: React.FC = () => {
   return (
-    <div
-      className="w-64 h-full bg-background/50 backdrop-blur-xl border-r border-border/50 flex flex-col pt-12 relative z-50"
-      style={{ WebkitAppRegion: 'drag' } as any}
-    >
+    <div className="w-64 h-full bg-background/50 backdrop-blur-xl border-r border-border/50 flex flex-col pt-12 relative z-50 app-draggable">
       <div className="px-6 mb-8 flex items-center space-x-3">
         <img
           src="/logo.png"
@@ -42,10 +39,7 @@ export const Sidebar: React.FC = () => {
         <h1 className="text-xl font-bold tracking-tight text-foreground/90">DevDock</h1>
       </div>
 
-      <nav
-        className="flex-1 px-3 space-y-1 overflow-y-auto"
-        style={{ WebkitAppRegion: 'no-drag' } as any}
-      >
+      <nav className="flex-1 px-3 space-y-1 overflow-y-auto app-no-drag">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.path}
@@ -84,7 +78,7 @@ export const Sidebar: React.FC = () => {
         ))}
       </nav>
 
-      <div className="p-3 border-t border-border/50" style={{ WebkitAppRegion: 'no-drag' } as any}>
+      <div className="p-3 border-t border-border/50 app-no-drag">
         <NavLink
           to="/settings"
           className={({ isActive }) =>

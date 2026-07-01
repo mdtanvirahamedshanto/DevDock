@@ -43,7 +43,7 @@ export const useMonitoringStore = create<MonitoringStore>((set, get) => ({
     electronAPI.send('monitoring:start');
 
     // Listen for ticks
-    electronAPI.on('monitoring:tick', (_event: any, tick: TelemetryTick) => {
+    electronAPI.on('monitoring:tick', (tick: TelemetryTick) => {
       set((state) => {
         const newHistory = [...state.history, tick];
         // Keep last 60 seconds

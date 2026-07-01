@@ -39,15 +39,9 @@ export const MainLayout: React.FC = () => {
         {/* Main Content Area in rounded glassmorphism wrapper */}
         <div className="flex-1 bg-card/40 backdrop-blur-2xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden flex flex-col relative">
           {/* Top Toolbar - Drag region for frameless windows */}
-          <header
-            className="h-12 border-b border-border/50 flex items-center px-4 z-10 bg-transparent shrink-0"
-            style={{ WebkitAppRegion: 'drag' } as any}
-          >
+          <header className="h-12 border-b border-border/50 flex items-center px-4 z-10 bg-transparent shrink-0 app-draggable">
             <div className="flex-1" />
-            <div
-              className="text-xs text-muted-foreground"
-              style={{ WebkitAppRegion: 'no-drag' } as any}
-            >
+            <div className="text-xs text-muted-foreground app-no-drag">
               Press{' '}
               <kbd className="font-mono bg-muted px-1.5 py-0.5 rounded border border-border">
                 ⌘ K

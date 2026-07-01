@@ -76,3 +76,11 @@
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+.app-draggable {
+  -webkit-app-region: drag;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag;
+}

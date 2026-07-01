@@ -42,7 +42,19 @@ export class MonitoringEngine {
 
   async getHealth() {
     try {
-      const [diskLayout, smart] = await Promise.all([si.diskLayout(), si.smart()]);
+      const diskLayout = await si.diskLayout();
+
+      // smartCheck is not consistently available across OSes or versions
+      let smartInfo: any = null;
+      try {
+        if (typeof (si as any).smartCheck === 'function') {
+          smartInfo = await (si as any).smartCheck();
+        } else if (typeof (si as any).smart === 'function') {
+          smartInfo = await (si as any).smart();
+        }
+      } catch (e) {
+        console.warn('S.M.A.R.T check skipped or unsupported', e);
+      }
 
       return {
         disks: diskLayout.map((d) => ({
@@ -50,8 +62,8 @@ export class MonitoringEngine {
           type: d.type,
           name: d.name,
           size: d.size,
-          smartStatus: smart?.json?.hasOwnProperty(d.device)
-            ? smart.json[d.device].smart_status
+          smartStatus: smartInfo?.json?.hasOwnProperty(d.device)
+            ? smartInfo.json[d.device].smart_status
             : 'Unknown',
         })),
       };
