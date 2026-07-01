@@ -216,6 +216,10 @@ importers:
         version: link:../config/typescript-config
 
   packages/processes:
+    dependencies:
+      systeminformation:
+        specifier: ^5.31.11
+        version: 5.31.11
     devDependencies:
       '@devdock/eslint-config':
         specifier: workspace:*

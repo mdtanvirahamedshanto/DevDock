@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MainLayout } from './layouts/MainLayout';
 import { Dashboard } from './pages/Dashboard';
 import { SettingsPage } from './pages/Settings';
+import { Processes } from './pages/Processes';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Toaster } from '@devdock/ui';
 import './index.css';
@@ -20,6 +21,7 @@ export const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Dashboard />} />
+              <Route path="processes" element={<Processes />} />
               <Route path="settings" element={<SettingsPage />} />
               {/* Other routes placeholder */}
               <Route path="*" element={<div className="p-6">Work in progress...</div>} />

@@ -3,6 +3,7 @@ import { join } from 'path';
 import { windowManager } from './WindowManager';
 import { recoveryManager } from '@devdock/core';
 import { getSystemMetrics } from '@devdock/system';
+import { processService } from '@devdock/processes';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -155,4 +156,22 @@ ipcMain.handle('system:info', async () => {
     timestamp: new Date().toISOString(),
     requestId: '123',
   };
+});
+
+ipcMain.handle('processes:list', async () => {
+  try {
+    const processes = await processService.getProcesses();
+    return { success: true, data: processes };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('processes:action', async (_, { pid, action }) => {
+  try {
+    const result = await processService.executeAction(pid, action);
+    return { success: result };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
 });
