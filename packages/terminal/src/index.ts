@@ -1,1 +1,1 @@
-export const name = '@devdock/terminal';
+export * from './pty';

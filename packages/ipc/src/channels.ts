@@ -1,5 +1,9 @@
 export const IPC_CHANNELS = {
   SYSTEM_INFO: 'system:info',
+  TERMINAL_SPAWN: 'terminal:spawn',
+  TERMINAL_WRITE: 'terminal:write',
+  TERMINAL_RESIZE: 'terminal:resize',
+  TERMINAL_KILL: 'terminal:kill',
   FILES_LARGE: 'files:large',
   FILES_DUPLICATES: 'files:duplicates',
   FILES_DELETE: 'files:delete',

@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@devdock/core": "workspace:*",
+    "@devdock/files": "workspace:*",
     "@devdock/ipc": "workspace:*",
     "@devdock/ui": "workspace:*",
-    "@devdock/files": "workspace:*",
     "@tanstack/react-query": "^5.28.0",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
     "lucide-react": "^0.368.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

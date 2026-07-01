@@ -10,6 +10,7 @@ import { dbManager } from '@devdock/database';
 import { dockerEngine } from '@devdock/docker';
 import { gitEngine } from '@devdock/git';
 import { fileScanner } from '@devdock/files';
+import { terminalEngine } from '@devdock/terminal';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -360,4 +361,24 @@ ipcMain.handle('files:duplicates', async (_, { path }) => {
 ipcMain.handle('files:delete', async (_, { path }) => {
   const success = await fileScanner.deleteFile(path);
   return { success };
+});
+
+// Terminal IPC
+ipcMain.handle('terminal:spawn', async (event, { shell, cwd }) => {
+  const id = terminalEngine.spawn(shell, cwd, (tid, data) => {
+    event.sender.send(`terminal:data-${tid}`, data);
+  });
+  return { id };
+});
+
+ipcMain.on('terminal:write', (_, { id, data }) => {
+  terminalEngine.write(id, data);
+});
+
+ipcMain.on('terminal:resize', (_, { id, cols, rows }) => {
+  terminalEngine.resize(id, cols, rows);
+});
+
+ipcMain.on('terminal:kill', (_, { id }) => {
+  terminalEngine.kill(id);
 });
