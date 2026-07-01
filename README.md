@@ -1,57 +1,105 @@
-# DevDock 🚢
+<div align="center">
+  <img src="./apps/desktop/public/logo.png" alt="DevDock Logo" width="120" />
+  <h1>DevDock 🚢</h1>
+  <p><strong>The Colossal, Unified Desktop Application Engineered for Modern Developers</strong></p>
 
-DevDock is a colossal, unified Desktop application engineered for modern developers. It aims to completely replace the fragmented tooling ecosystem (Task Manager, Docker Desktop, Database Clients, Terminals) into one visually stunning, high-performance interface.
+  <a href="https://github.com/mdtanvirahamedshanto/DevDock/actions/workflows/build-release.yml">
+    <img src="https://github.com/mdtanvirahamedshanto/DevDock/actions/workflows/build-release.yml/badge.svg" alt="Build Status">
+  </a>
+  <a href="https://github.com/mdtanvirahamedshanto/DevDock/releases/latest">
+    <img src="https://img.shields.io/github/v/release/mdtanvirahamedshanto/DevDock?label=version" alt="Latest Release">
+  </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT">
+  </a>
+  <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey" alt="Supported Platforms">
+</div>
 
-Built with **Electron**, **React**, **Zustand**, **Shadcn UI**, and a massive **Pnpm TurboRepo** workspace architecture.
+<br/>
 
-## 🌟 Master Feature List (Completed Phases)
+DevDock aims to completely replace the fragmented developer tooling ecosystem (Task Manager, Docker Desktop, Database Clients, Terminals, System Monitors) with **one visually stunning, high-performance interface.**
 
-1. **Dashboard & Widget System**: Real-time system telemetry cards.
+Built with **Electron**, **React**, **Zustand**, **Shadcn UI**, and a massively scalable **Pnpm TurboRepo** architecture.
+
+---
+
+## 📥 Download
+
+DevDock is automatically compiled for macOS, Windows, and Linux.
+
+> **[👉 Download the latest release here](https://github.com/mdtanvirahamedshanto/DevDock/releases/latest)**
+
+- **macOS**: `.dmg` (Universal)
+- **Windows**: `.exe` (NSIS Installer)
+- **Linux**: `.AppImage` (Universal) or `.deb`
+
+---
+
+## 🌟 Master Feature List
+
+1. **System Monitoring**: A 60-FPS push-based telemetry engine tracking CPU (per-core GHz/Load), RAM (macOS Memory Pressure/Swap), Network I/O, and physical disk S.M.A.R.T status in real-time. Includes a frameless system tray popup dashboard!
 2. **Process Manager**: A native task manager (kill, suspend, resume) via `ps-list` IPC hooks.
-3. **Port Manager**: Maps active TCP/UDP ports, detects conflicts, and force-kills locking processes via `netstat` and `lsof`.
+3. **Port Manager**: Maps active TCP/UDP ports, detects conflicts, and force-kills locking processes.
 4. **Project Manager**: Recursively scans workspaces, automatically detects frameworks (Next.js, Vue, Laravel), and manages Env files and Node instances.
-5. **Database Center**: A built-in connection manager for MySQL and PostgreSQL. Provides a SQL execution terminal and schema viewer!
+5. **Database Center**: Built-in connection manager for MySQL and PostgreSQL. Provides a SQL execution terminal and schema viewer!
 6. **Docker Manager**: Interacts natively with the Docker daemon (`/var/run/docker.sock`) to manage containers, images, volumes, and networks.
 7. **Git Interface**: Wraps `simple-git` for visual commits, pushing, pulling, and branch switching directly within your workspace roots.
-8. **File Manager (Disk Sweeper)**: A multi-threaded scanner that deeply crawls for files >10MB and clusters identical files by executing MD5 byte-hashing for instant deduplication.
-9. **Terminal Emulator**: Integrates `node-pty` and `xterm.js` to spawn authentic, native local Zsh/Bash/PowerShell multi-tab instances that auto-resize fluidly.
-10. **System Monitoring**: A 60-FPS push-based telemetry engine (`systeminformation` + `recharts`) tracking CPU, RAM, Network I/O, and physical disk S.M.A.R.T status in real-time.
+8. **File Manager (Disk Sweeper)**: A multi-threaded scanner that deeply crawls for large files and clusters identical files via MD5 byte-hashing for instant deduplication.
+9. **Terminal Emulator**: Integrates `node-pty` and `xterm.js` to spawn authentic, native local Zsh/Bash/PowerShell multi-tab instances.
 
-## 🚀 Installation & Build
+---
 
-### Developer Setup
+## 📸 Screenshots
+
+_(Add screenshots of the Dashboard, Terminal, Docker Manager, and Tray Popup here!)_
+
+---
+
+## 🚀 Installation & Development Build
+
+Want to contribute or run DevDock from source? It's easy:
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/mdtanvirahamedshanto/DevDock.git
 
-# Install dependencies (requires Pnpm)
+# 2. Install dependencies (requires Pnpm)
 pnpm install
 
-# Start the TurboRepo dev servers (React frontend + Electron backend)
+# 3. Start the TurboRepo dev servers (React frontend + Electron backend)
 pnpm run dev
 ```
 
-### Production Release
+### Packaging Locally
 
-DevDock automatically compiles installers for Mac (`.dmg`), Windows (`.exe`), and Linux (`.AppImage`) via GitHub Actions.
+You can manually trigger the `electron-builder` packages on your own machine:
 
-To trigger a build:
+```bash
+# Build for your current OS:
+pnpm run package:mac
+# Or package:win, package:linux
+```
 
-1. Commit your changes.
-2. Create and push a tag:
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-3. GitHub Actions will handle compiling native dependencies (`node-pty`, `sqlite3`, etc.), packaging the app via `electron-builder`, and uploading it to the GitHub Releases page.
+---
 
 ## 🏗️ Architecture
 
-DevDock utilizes a highly modular **TurboRepo** architecture. The `apps/desktop` package acts purely as a UI renderer and an IPC router. All actual operating system logic is isolated into independent node modules:
+DevDock utilizes a highly modular **TurboRepo** architecture. The `apps/desktop` package acts purely as a UI renderer and an IPC router. All actual operating system logic is strictly isolated into independent node modules:
 
 - `@devdock/core`: App Recovery, Logging, Global Events.
 - `@devdock/ui`: Shadcn/Radix primitive components.
-- `@devdock/system`, `@devdock/processes`, `@devdock/ports`, `@devdock/monitoring`: Native telemetry engines.
+- `@devdock/system`, `@devdock/processes`, `@devdock/monitoring`: Native OS telemetry engines.
 - `@devdock/projects`, `@devdock/files`: High-performance filesystem crawlers.
-- `@devdock/database`, `@devdock/docker`, `@devdock/git`, `@devdock/terminal`: Wrappers for external developer tooling.
+- `@devdock/database`, `@devdock/docker`, `@devdock/git`: Wrappers for external developer tooling.
+
+---
+
+## 🤝 Contributing
+
+DevDock is an open-source project and we love contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started.
+
+We also expect all contributors to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## 🛡️ License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
