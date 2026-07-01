@@ -68,7 +68,7 @@
   "build": {
     "appId": "com.devdock.app",
     "productName": "DevDock",
-    "nodeModulesManager": "npm",
+    "npmRebuild": false,
     "directories": {
       "output": "release",
       "buildResources": "build"

@@ -47,7 +47,11 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
+        env:
+          npm_config_runtime: electron
+          npm_config_target: 29.4.6
+          npm_config_disturl: https://electronjs.org/headers
 
       - name: Build Application (macOS)
         if: matrix.os == 'macos-latest'
