@@ -32,6 +32,12 @@ export const Files: React.FC = () => {
   const { projects } = useProjectStore();
   const { toast } = useToast();
 
+  React.useEffect(() => {
+    if (!targetPath && Object.keys(projects).length > 0) {
+      setTargetPath(Object.values(projects)[0].path);
+    }
+  }, [projects, targetPath, setTargetPath]);
+
   const formatBytes = (bytes: number) => {
     if (!bytes || bytes === 0) return '0 B';
     const k = 1024,

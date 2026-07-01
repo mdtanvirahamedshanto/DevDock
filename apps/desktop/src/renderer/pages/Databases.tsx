@@ -55,6 +55,12 @@ export const Databases: React.FC = () => {
     setNewConn({ name: '', engine: 'postgres', connectionString: '' });
   };
 
+  React.useEffect(() => {
+    if (!activeConnectionId && savedConnections.length > 0) {
+      connect(savedConnections[0].id);
+    }
+  }, [savedConnections, activeConnectionId, connect]);
+
   const activeConn = savedConnections.find((c) => c.id === activeConnectionId);
 
   return (

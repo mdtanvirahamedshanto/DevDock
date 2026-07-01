@@ -3,35 +3,77 @@ import si from 'systeminformation';
 export class MonitoringEngine {
   async getTick() {
     try {
-      const [cpuLoad, mem, networkStats, temp, graphics] = await Promise.all([
+      const [
+        cpu,
+        cpuLoad,
+        mem,
+        networkStats,
+        networkInterfaces,
+        temp,
+        graphics,
+        battery,
+        bluetooth,
+        fsSize,
+      ] = await Promise.all([
+        si.cpu(),
         si.currentLoad(),
         si.mem(),
         si.networkStats(),
+        si.networkInterfaces(),
         si.cpuTemperature(),
         si.graphics(),
+        si.battery(),
+        si.bluetoothDevices(),
+        si.fsSize(),
       ]);
 
       return {
         cpu: {
           load: cpuLoad.currentLoad,
-          cores: cpuLoad.cpus.map((c) => c.load),
+          system: cpuLoad.currentLoadSystem,
+          user: cpuLoad.currentLoadUser,
+          idle: cpuLoad.currentLoadIdle,
+          cores: cpuLoad.cpus.map((c) => ({
+            load: c.load,
+            system: c.loadSystem,
+            user: c.loadUser,
+            idle: c.loadIdle,
+          })),
+          brand: cpu.brand,
+          physicalCores: cpu.physicalCores,
+          coresTotal: cpu.cores,
         },
         mem: {
           total: mem.total,
           used: mem.active,
+          free: mem.free,
+          swapTotal: mem.swaptotal,
+          swapUsed: mem.swapused,
           percentage: (mem.active / mem.total) * 100,
         },
         network: {
+          interfaces: Array.isArray(networkInterfaces) ? networkInterfaces : [networkInterfaces],
+          stats: Array.isArray(networkStats) ? networkStats : [networkStats],
           rx_sec: networkStats[0]?.rx_sec || 0,
           tx_sec: networkStats[0]?.tx_sec || 0,
         },
         hardware: {
           temp: temp.main || 0,
-          fanRpm: temp.max || 0, // Using max temp as fallback if fan isn't provided directly, some systems map it here
+          fanRpm: temp.max || 0,
           gpuLoad: graphics.controllers[0]?.memoryUsed
             ? (graphics.controllers[0].memoryUsed / graphics.controllers[0].memoryTotal) * 100
             : 0,
+          controllers: graphics.controllers,
         },
+        battery: {
+          hasBattery: battery.hasBattery,
+          percent: battery.percent,
+          isCharging: battery.isCharging,
+          timeRemaining: battery.timeRemaining,
+          cycleCount: battery.cycleCount,
+        },
+        bluetooth: bluetooth || [],
+        fs: fsSize || [],
         timestamp: Date.now(),
       };
     } catch (e) {

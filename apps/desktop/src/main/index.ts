@@ -404,7 +404,12 @@ ipcMain.on('monitoring:start', (event) => {
   if (monitoringInterval) clearInterval(monitoringInterval);
   monitoringInterval = setInterval(async () => {
     const tick = await monitoringEngine.getTick();
-    if (tick) event.sender.send('monitoring:tick', tick);
+    if (tick && !event.sender.isDestroyed()) {
+      event.sender.send('monitoring:tick', tick);
+    } else if (event.sender.isDestroyed()) {
+      clearInterval(monitoringInterval!);
+      monitoringInterval = null;
+    }
   }, 1000);
 });
 

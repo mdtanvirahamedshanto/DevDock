@@ -43,6 +43,13 @@ export const Git: React.FC = () => {
     setCommitMessage('');
   }, [targetPath]);
 
+  // Auto-select first project if none is selected
+  useEffect(() => {
+    if (!targetPath && Object.keys(projects).length > 0) {
+      setTargetPath(Object.values(projects)[0].path);
+    }
+  }, [projects, targetPath, setTargetPath]);
+
   const toggleFile = (file: string) => {
     const newStaged = new Set(stagedFiles);
     if (newStaged.has(file)) newStaged.delete(file);

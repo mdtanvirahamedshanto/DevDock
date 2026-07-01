@@ -1,10 +1,45 @@
 import { create } from 'zustand';
 
 export interface TelemetryTick {
-  cpu: { load: number; cores: number[] };
-  mem: { total: number; used: number; percentage: number };
-  network: { rx_sec: number; tx_sec: number };
-  hardware: { temp: number; fanRpm: number; gpuLoad: number };
+  cpu: {
+    load: number;
+    system: number;
+    user: number;
+    idle: number;
+    cores: { load: number; system: number; user: number; idle: number }[];
+    brand: string;
+    physicalCores: number;
+    coresTotal: number;
+  };
+  mem: {
+    total: number;
+    used: number;
+    free: number;
+    swapTotal: number;
+    swapUsed: number;
+    percentage: number;
+  };
+  network: {
+    interfaces: any[];
+    stats: any[];
+    rx_sec: number;
+    tx_sec: number;
+  };
+  hardware: {
+    temp: number;
+    fanRpm: number;
+    gpuLoad: number;
+    controllers: any[];
+  };
+  battery: {
+    hasBattery: boolean;
+    percent: number;
+    isCharging: boolean;
+    timeRemaining: number;
+    cycleCount: number;
+  };
+  bluetooth: any[];
+  fs: any[];
   timestamp: number;
 }
 
