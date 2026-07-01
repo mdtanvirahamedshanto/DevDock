@@ -9,6 +9,14 @@ export const electronAPI = {
     }
     throw new Error(`Unauthorized IPC channel: ${channel}`);
   },
+  on: (channel: string, callback: (...args: any[]) => void) => {
+    if (channel === 'system:metrics') {
+      const subscription = (_event: any, ...args: any[]) => callback(...args);
+      ipcRenderer.on(channel, subscription);
+      return () => ipcRenderer.removeListener(channel, subscription);
+    }
+    throw new Error(`Unauthorized IPC channel listener: ${channel}`);
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronAPI);

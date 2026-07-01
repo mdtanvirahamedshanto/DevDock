@@ -2,6 +2,7 @@ import { app, ipcMain, BrowserWindow, Menu, MenuItemConstructorOptions } from 'e
 import { join } from 'path';
 import { windowManager } from './WindowManager';
 import { recoveryManager } from '@devdock/core';
+import { getSystemMetrics } from '@devdock/system';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -106,11 +107,23 @@ app.whenReady().then(async () => {
   await bootSequence();
   setupNativeMenus();
 
-  windowManager.createMainWindow(
+  const mainWindow = windowManager.createMainWindow(
     join(__dirname, '../preload/index.js'),
     join(__dirname, '../renderer/index.html'),
     process.env.VITE_DEV_SERVER_URL,
   );
+
+  // Broadcast system metrics every 2 seconds
+  setInterval(async () => {
+    try {
+      const metrics = await getSystemMetrics();
+      if (!mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('system:metrics', metrics);
+      }
+    } catch (err) {
+      console.error('Failed to broadcast metrics', err);
+    }
+  }, 2000);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
