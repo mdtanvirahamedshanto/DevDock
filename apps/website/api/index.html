@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference | DevDock</title>
+    
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
+          extend: {
+            colors: {
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
+              muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
+              border: "hsl(var(--border))",
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-primary/30">
+
+    <header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300 border-b bg-background/80 backdrop-blur-md shadow-md border-border">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <img src="/assets/images/logo.png" alt="DevDock Logo" class="w-8 h-8 rounded-lg shadow-lg">
+                <span class="font-bold text-lg tracking-tight">DevDock</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="/" class="text-sm font-medium text-muted-foreground hover:text-foreground">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 mt-24 mb-24">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h1 class="text-4xl font-bold mb-6">Plugin API Reference</h1>
+            <p class="text-muted-foreground mb-8">Extend DevDock with custom plugins written in TypeScript.</p>
+
+            <div class="prose prose-invert max-w-none text-muted-foreground space-y-6">
+                <p>
+                    DevDock offers a powerful IPC-based plugin system that allows you to add custom panels, interact with the local filesystem, or hook into the native Docker and Process Manager engines.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">Getting Started</h2>
+                <p>
+                    To create a new plugin, run the following command in your terminal:
+                </p>
+                <pre class="bg-muted p-4 rounded-md"><code>npx create-devdock-plugin my-plugin</code></pre>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">Core API Endpoints</h2>
+                
+                <h3 class="text-xl font-medium text-foreground mt-6 mb-2"><code>devdock.docker.listContainers()</code></h3>
+                <p>Returns a promise resolving to an array of all active and inactive Docker containers on the local machine.</p>
+
+                <h3 class="text-xl font-medium text-foreground mt-6 mb-2"><code>devdock.process.kill(pid)</code></h3>
+                <p>Forcefully terminates a running process by its Process ID (PID). Requires administrative privileges on some systems.</p>
+
+                <h3 class="text-xl font-medium text-foreground mt-6 mb-2"><code>devdock.ui.registerSidebarPanel(config)</code></h3>
+                <p>Registers a new tab in the DevDock left sidebar. You must pass a configuration object containing the icon, title, and React component to render.</p>
+
+                <div class="bg-primary/10 border border-primary/20 rounded-md p-4 mt-8">
+                    <p class="text-primary font-medium m-0">Coming Soon</p>
+                    <p class="text-sm m-0 mt-2">The full API documentation portal is currently under construction for the v1.2.0 release. Check back later for complete type definitions and examples.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-border/50 bg-muted/20 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm text-muted-foreground mb-2">© 2026 DevDock Open Source Team. All rights reserved.</p>
+            <p class="text-sm text-muted-foreground">Developed with ❤️ by <a href="https://tashanto.com" target="_blank" class="text-foreground hover:text-primary transition-colors font-medium">MD Tanvir Ahamed Shanto</a></p>
+        </div>
+    </footer>
+    
+</body>
+</html>

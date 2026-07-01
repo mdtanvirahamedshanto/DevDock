@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | DevDock</title>
+    
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
+          extend: {
+            colors: {
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
+              muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
+              border: "hsl(var(--border))",
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-primary/30">
+
+    <header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300 border-b bg-background/80 backdrop-blur-md shadow-md border-border">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <img src="/assets/images/logo.png" alt="DevDock Logo" class="w-8 h-8 rounded-lg shadow-lg">
+                <span class="font-bold text-lg tracking-tight">DevDock</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="/" class="text-sm font-medium text-muted-foreground hover:text-foreground">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 mt-24 mb-24">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h1 class="text-4xl font-bold mb-6">Documentation</h1>
+            <p class="text-muted-foreground mb-8">Everything you need to know to get the most out of DevDock.</p>
+
+            <div class="prose prose-invert max-w-none text-muted-foreground space-y-6">
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">Installation</h2>
+                <p>
+                    DevDock is available as a pre-compiled binary for macOS, Windows, and Linux. Head over to the <a href="/#download" class="text-primary hover:underline">Download section</a> of our homepage to get the latest release for your platform.
+                </p>
+                <ul class="list-disc pl-6 space-y-2 mt-4">
+                    <li><strong>macOS:</strong> Download the `.dmg` file, open it, and drag DevDock to your Applications folder.</li>
+                    <li><strong>Windows:</strong> Download and run the `.exe` installer.</li>
+                    <li><strong>Linux:</strong> Download the `.AppImage`, mark it as executable (`chmod +x`), and run it.</li>
+                </ul>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">Quick Start Guide</h2>
+                <p>
+                    Upon launching DevDock for the first time, you'll be greeted by the System Monitor dashboard. From the left sidebar, you can navigate to:
+                </p>
+                <ul class="list-disc pl-6 space-y-2 mt-4">
+                    <li><strong>Processes:</strong> View and manage running applications.</li>
+                    <li><strong>Docker:</strong> Manage containers and images (requires Docker Engine running).</li>
+                    <li><strong>Ports:</strong> Identify and free up occupied localhost ports.</li>
+                    <li><strong>Terminal:</strong> Open built-in terminal tabs.</li>
+                </ul>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">Docker Integration Requirements</h2>
+                <p>
+                    To use the Docker dashboard in DevDock, you must have the Docker daemon running on your host machine. DevDock will automatically attempt to connect to the default Docker socket:
+                </p>
+                <ul class="list-disc pl-6 space-y-2 mt-4">
+                    <li>macOS/Linux: <code>/var/run/docker.sock</code></li>
+                    <li>Windows: <code>//./pipe/docker_engine</code></li>
+                </ul>
+                <p class="mt-4">
+                    If you are using an alternative like OrbStack, DevDock will automatically detect its socket as well.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">Troubleshooting</h2>
+                <p>
+                    If you encounter any issues, please check our <a href="https://github.com/mdtanvirahamedshanto/DevDock/issues" class="text-primary hover:underline">GitHub Issues</a> page. You can easily report bugs directly from there.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-border/50 bg-muted/20 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm text-muted-foreground mb-2">© 2026 DevDock Open Source Team. All rights reserved.</p>
+            <p class="text-sm text-muted-foreground">Developed with ❤️ by <a href="https://tashanto.com" target="_blank" class="text-foreground hover:text-primary transition-colors font-medium">MD Tanvir Ahamed Shanto</a></p>
+        </div>
+    </footer>
+    
+</body>
+</html>

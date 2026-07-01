@@ -108,4 +108,25 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // --- OS Detection for Hero Download Button ---
+  const heroDownloadBtn = document.getElementById('hero-download-btn');
+  const heroDownloadText = document.getElementById('hero-download-text');
+
+  if (heroDownloadBtn && heroDownloadText) {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    
+    if (userAgent.includes('mac')) {
+      heroDownloadText.textContent = 'Download for macOS';
+      heroDownloadBtn.href = '#download'; // Link to macOS section or direct link
+    } else if (userAgent.includes('win')) {
+      heroDownloadText.textContent = 'Download for Windows';
+      heroDownloadBtn.href = '#download'; // Link to windows section or direct link
+    } else if (userAgent.includes('linux')) {
+      heroDownloadText.textContent = 'Download for Linux';
+      heroDownloadBtn.href = '#download'; // Link to linux section or direct link
+    } else {
+      heroDownloadText.textContent = 'Download DevDock';
+    }
+  }
 });

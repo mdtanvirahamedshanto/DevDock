@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | DevDock</title>
+    
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          container: { center: true, padding: '2rem', screens: { '2xl': '1400px' } },
+          extend: {
+            colors: {
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
+              muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
+              border: "hsl(var(--border))",
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-primary/30">
+
+    <!-- Simple Header -->
+    <header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300 border-b bg-background/80 backdrop-blur-md shadow-md border-border">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <img src="/assets/images/logo.png" alt="DevDock Logo" class="w-8 h-8 rounded-lg shadow-lg">
+                <span class="font-bold text-lg tracking-tight">DevDock</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="/" class="text-sm font-medium text-muted-foreground hover:text-foreground">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 mt-24 mb-24">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h1 class="text-4xl font-bold mb-6">Privacy Policy</h1>
+            <p class="text-muted-foreground mb-8">Last updated: July 1, 2026</p>
+
+            <div class="prose prose-invert max-w-none text-muted-foreground space-y-6">
+                <p>
+                    At DevDock, your privacy is our priority. Because DevDock is a desktop application that runs entirely on your local machine, we do not collect, store, or transmit your personal data, codebase information, or database credentials.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">1. Data Collection</h2>
+                <p>
+                    <strong>DevDock collects zero telemetry by default.</strong> We do not track your usage patterns, the projects you work on, or any of your local environment variables. Your data stays on your machine.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">2. Auto-Updates</h2>
+                <p>
+                    The DevDock desktop application periodically checks our GitHub repository to see if a new version is available. This process sends a standard HTTP GET request to the GitHub API, which includes your IP address and standard user-agent string as required by the protocol. We do not store this information.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">3. Third-Party Integrations</h2>
+                <p>
+                    If you choose to use DevDock plugins that interact with third-party APIs (e.g., AWS, Vercel, or Docker Hub), those plugins will communicate directly with those services. Please review the privacy policies of any third-party services you connect to DevDock.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">4. Changes to This Policy</h2>
+                <p>
+                    We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                </p>
+
+                <h2 class="text-2xl font-semibold text-foreground mt-8 mb-4">5. Contact Us</h2>
+                <p>
+                    If you have any questions about this Privacy Policy, please contact us at support@tashanto.com or open an issue on our GitHub repository.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-border/50 bg-muted/20 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm text-muted-foreground mb-2">© 2026 DevDock Open Source Team. All rights reserved.</p>
+            <p class="text-sm text-muted-foreground">Developed with ❤️ by <a href="https://tashanto.com" target="_blank" class="text-foreground hover:text-primary transition-colors font-medium">MD Tanvir Ahamed Shanto</a></p>
+        </div>
+    </footer>
+    
+</body>
+</html>
