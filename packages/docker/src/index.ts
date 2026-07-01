@@ -1,1 +1,1 @@
-export const name = '@devdock/docker';
+export * from './engine';

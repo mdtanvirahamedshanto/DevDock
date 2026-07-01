@@ -7,6 +7,7 @@ import { processService } from '@devdock/processes';
 import { portService } from '@devdock/ports';
 import { scanWorkspace, projectRunner, readEnvFile, writeEnvFile } from '@devdock/projects';
 import { dbManager } from '@devdock/database';
+import { dockerEngine } from '@devdock/docker';
 
 const bootSequence = async () => {
   console.log('[Boot] Initializing DevDock Native Core...');
@@ -274,6 +275,38 @@ ipcMain.handle('db:tables', async (_, { id }) => {
   try {
     const tables = await dbManager.getTables(id);
     return { success: true, data: tables };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+});
+
+// Docker IPC
+ipcMain.handle('docker:containers', async () => {
+  return await dockerEngine.getContainers();
+});
+ipcMain.handle('docker:images', async () => {
+  return await dockerEngine.getImages();
+});
+ipcMain.handle('docker:volumes', async () => {
+  return await dockerEngine.getVolumes();
+});
+ipcMain.handle('docker:networks', async () => {
+  return await dockerEngine.getNetworks();
+});
+ipcMain.handle('docker:action', async (_, { entity, action, id }) => {
+  try {
+    if (entity === 'container') {
+      if (action === 'start') await dockerEngine.startContainer(id);
+      if (action === 'stop') await dockerEngine.stopContainer(id);
+      if (action === 'remove') await dockerEngine.removeContainer(id);
+    } else if (entity === 'image' && action === 'remove') {
+      await dockerEngine.removeImage(id);
+    } else if (entity === 'volume' && action === 'remove') {
+      await dockerEngine.removeVolume(id);
+    } else if (entity === 'network' && action === 'remove') {
+      await dockerEngine.removeNetwork(id);
+    }
+    return { success: true };
   } catch (err: any) {
     return { success: false, error: err.message };
   }

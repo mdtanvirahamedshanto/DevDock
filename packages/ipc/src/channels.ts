@@ -1,6 +1,10 @@
 export const IPC_CHANNELS = {
   SYSTEM_INFO: 'system:info',
   DOCKER_CONTAINERS: 'docker:containers',
+  DOCKER_IMAGES: 'docker:images',
+  DOCKER_VOLUMES: 'docker:volumes',
+  DOCKER_NETWORKS: 'docker:networks',
+  DOCKER_ACTION: 'docker:action',
   PORT_LIST: 'port:list',
   PROCESSES_LIST: 'processes:list',
   PROCESSES_ACTION: 'processes:action',
