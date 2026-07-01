@@ -66,10 +66,8 @@ export const MainLayout: React.FC = () => {
               <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
               <span>Daemon Online</span>
             </div>
-            <span>•</span>
-            <span>Docker: Connected</span>
             <div className="flex-1" />
-            <span>DevDock Enterprise v1.0.0</span>
+            <span>DevDock v1.0.0</span>
           </footer>
         </div>
       </div>

@@ -29,5 +29,8 @@
     "*.{md,json}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@types/uuid": "^11.0.0"
   }
 }
