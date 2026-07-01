@@ -41,16 +41,15 @@
     "@xterm/addon-fit": "^0.11.0",
     "@xterm/xterm": "^6.0.0",
     "dockerode": "^4.0.2",
-    "node-pty": "^1.1.0",
-    "sqlite3": "^5.1.7",
-    "systeminformation": "^5.22.8",
     "electron-updater": "^6.8.9",
     "framer-motion": "^11.0.24",
     "lucide-react": "^0.368.0",
+    "node-pty": "^1.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "recharts": "^3.9.1",
+    "systeminformation": "^5.22.8",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
@@ -69,6 +68,7 @@
   "build": {
     "appId": "com.devdock.app",
     "productName": "DevDock",
+    "nodeModulesManager": "npm",
     "directories": {
       "output": "release",
       "buildResources": "build"

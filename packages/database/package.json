@@ -8,8 +8,7 @@
     "ioredis": "^5.11.1",
     "mongodb": "^7.4.0",
     "mysql2": "^3.22.5",
-    "pg": "^8.22.0",
-    "sqlite3": "^6.0.1"
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@devdock/eslint-config": "workspace:*",

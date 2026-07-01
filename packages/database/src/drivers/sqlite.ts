@@ -1,15 +1,17 @@
 import { IDatabaseDriver, DbConnectionConfig, DbQueryResult } from '../types';
-import sqlite3 from 'sqlite3';
+import Database from 'better-sqlite3';
 
 export class SqliteDriver implements IDatabaseDriver {
-  private db: sqlite3.Database | null = null;
+  private db: Database.Database | null = null;
 
   async connect(config: DbConnectionConfig): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.db = new sqlite3.Database(config.database || ':memory:', (err) => {
-        if (err) reject(err);
-        else resolve();
-      });
+      try {
+        this.db = new Database(config.database || ':memory:');
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -24,21 +26,46 @@ export class SqliteDriver implements IDatabaseDriver {
     if (!this.db) throw new Error('Not connected');
     const start = Date.now();
     return new Promise((resolve, reject) => {
-      this.db!.all(sql, (err, rows) => {
-        if (err) reject(err);
-        else
-          resolve({
-            rows,
-            fields: rows.length > 0 ? Object.keys(rows[0]) : [],
-            rowCount: rows.length,
-            executionTimeMs: Date.now() - start,
-          });
-      });
+      try {
+        const stmt = this.db!.prepare(sql);
+        let rows: any[] = [];
+        let changes = 0;
+
+        // If it's a SELECT statement or similar returning data
+        if (stmt.reader) {
+          rows = stmt.all();
+        } else {
+          // If it's an UPDATE/INSERT/DELETE
+          const info = stmt.run();
+          changes = info.changes;
+        }
+
+        resolve({
+          rows,
+          fields: rows.length > 0 ? Object.keys(rows[0]) : [],
+          rowCount: rows.length || changes,
+          executionTimeMs: Date.now() - start,
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  async execute(sql: string): Promise<void> {
+    if (!this.db) throw new Error('Not connected');
+    return new Promise((resolve, reject) => {
+      try {
+        this.db!.exec(sql);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
   async getTables(): Promise<string[]> {
     const res = await this.query("SELECT name FROM sqlite_master WHERE type='table'");
-    return res.rows.map((r) => r.name);
+    return res.rows.map((r: any) => r.name);
   }
 }
