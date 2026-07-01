@@ -144,11 +144,21 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                    <a href="#download" id="hero-download-btn" class="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 hover-lift">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <span id="hero-download-text">Download</span>
-                    </a>
-                    <a href="https://github.com/mdtanvirahamedshanto/DevDock" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2 hover-lift">
+                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <a href="#download" id="btn-mac" class="px-6 py-4 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 hover-lift w-full sm:w-auto text-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                            <span>macOS</span>
+                        </a>
+                        <a href="#download" id="btn-win" class="px-6 py-4 bg-[#0078D7] text-white rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 hover-lift w-full sm:w-auto text-sm">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                            <span>Windows</span>
+                        </a>
+                        <a href="#download" id="btn-linux" class="px-6 py-4 bg-[#E95420] text-white rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 hover-lift w-full sm:w-auto text-sm">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.015 1.054c-1.83 0-2.88 1.155-2.88 1.155-.78.78-.96 1.83-.96 1.83-.345 2.1-.21 3.525-.21 3.525l.855-.075c.195-2.22.84-3.375.84-3.375.465-.75 1.17-1.155 1.17-1.155s.735-.435 1.95-.435c1.23 0 1.95.435 1.95.435s.705.405 1.17 1.155c0 0 .645 1.155.84 3.375l.855.075s.135-1.425-.21-3.525c0 0-.18-1.05-.96-1.83 0 0-1.05-1.155-2.88-1.155zM10.38 6.45c-2.4 0-4.08 1.14-4.59 1.485-.6.435-1.17.96-1.17.96S3.72 9.87 3.555 11.19c-.195 1.455.09 3.09.09 3.09s.15 1.14.495 1.725c.36.57.84 1.155.84 1.155s1.26 1.17 2.475 1.485c1.23.3 2.58.285 2.58.285s1.35.015 2.58-.285c1.215-.315 2.475-1.485 2.475-1.485s.48-.585.84-1.155c.345-.585.495-1.725.495-1.725s.285-1.635.09-3.09c-.165-1.32-1.065-2.295-1.065-2.295s-.57-.525-1.17-.96c-.51-.345-2.19-1.485-4.59-1.485z"/></svg>
+                            <span>Linux</span>
+                        </a>
+                    </div>
+                    <a href="https://github.com/mdtanvirahamedshanto/DevDock" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2 hover-lift text-sm">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
                         View Source
                     </a>
@@ -613,5 +623,29 @@
     </footer>
     
     <script src="assets/js/main.js"></script>
+    <script>
+        // Fetch latest release from GitHub API
+        document.addEventListener('DOMContentLoaded', async () => {
+            const GITHUB_OWNER = 'mdtanvirahamedshanto';
+            const GITHUB_REPO = 'DevDock';
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`);
+                const data = await response.json();
+                
+                if (data.assets) {
+                    const macAsset = data.assets.find(a => a.name.endsWith('.dmg'));
+                    const winAsset = data.assets.find(a => a.name.endsWith('.exe'));
+                    const linuxAsset = data.assets.find(a => a.name.endsWith('.AppImage'));
+
+                    if (macAsset) document.getElementById('btn-mac').href = macAsset.browser_download_url;
+                    if (winAsset) document.getElementById('btn-win').href = winAsset.browser_download_url;
+                    if (linuxAsset) document.getElementById('btn-linux').href = linuxAsset.browser_download_url;
+                }
+            } catch (error) {
+                console.error('Failed to fetch latest releases from GitHub:', error);
+            }
+        });
+    </script>
 </body>
 </html>
