@@ -615,35 +615,53 @@
                 document.getElementById('hero-os-name').innerText = userOS;
             }
 
-            // 3. Fetch from GitHub
+            // 3. Set Local Fallback URLs
+            const localMac = './download/DevDock.dmg';
+            const localWin = './download/DevDock.exe';
+            const localLinuxAppImage = './download/DevDock.AppImage';
+            const localLinuxDeb = './download/DevDock.deb';
+            
+            // Set defaults to local first
+            document.getElementById('card-mac-dmg').href = localMac;
+            document.getElementById('card-win-exe').href = localWin;
+            document.getElementById('card-linux-appimage').href = localLinuxAppImage;
+            document.getElementById('card-linux-deb').href = localLinuxDeb;
+            
+            const heroBtn = document.getElementById('hero-download-btn');
+            if (osType === 'mac') heroBtn.href = localMac;
+            else if (osType === 'win') heroBtn.href = localWin;
+            else if (osType === 'linux') heroBtn.href = localLinuxAppImage;
+
+            // 4. Try to fetch from GitHub (Override if available)
             try {
                 const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`);
+                if (!response.ok) throw new Error("No latest release found");
                 const data = await response.json();
                 
                 // Update version text everywhere
                 const versionElements = document.querySelectorAll('.release-version');
                 versionElements.forEach(el => el.innerText = data.tag_name || "Latest");
 
-                if (data.assets) {
+                if (data.assets && data.assets.length > 0) {
                     const macAsset = data.assets.find(a => a.name.endsWith('.dmg'));
                     const winAsset = data.assets.find(a => a.name.endsWith('.exe'));
                     const linuxAsset = data.assets.find(a => a.name.endsWith('.AppImage'));
                     const debAsset = data.assets.find(a => a.name.endsWith('.deb'));
 
-                    // Update cards
+                    // Override with live GitHub URLs if found
                     if (macAsset) document.getElementById('card-mac-dmg').href = macAsset.browser_download_url;
                     if (winAsset) document.getElementById('card-win-exe').href = winAsset.browser_download_url;
                     if (linuxAsset) document.getElementById('card-linux-appimage').href = linuxAsset.browser_download_url;
                     if (debAsset) document.getElementById('card-linux-deb').href = debAsset.browser_download_url;
                     
-                    // Update Hero Button Link based on OS
-                    const heroBtn = document.getElementById('hero-download-btn');
                     if (osType === 'mac' && macAsset) heroBtn.href = macAsset.browser_download_url;
                     else if (osType === 'win' && winAsset) heroBtn.href = winAsset.browser_download_url;
                     else if (osType === 'linux' && linuxAsset) heroBtn.href = linuxAsset.browser_download_url;
                 }
             } catch (error) {
-                console.error('Failed to fetch latest releases from GitHub:', error);
+                console.log('Falling back to local /download/ directory due to API error or missing release:', error.message);
+                const versionElements = document.querySelectorAll('.release-version');
+                versionElements.forEach(el => el.innerText = "Local Build");
             }
         });
     </script>
